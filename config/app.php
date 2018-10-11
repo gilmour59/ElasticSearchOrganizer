@@ -161,7 +161,7 @@ return [
         App\Providers\RouteServiceProvider::class,
 
         Laravel\Scout\ScoutServiceProvider::class,
-        TeamTNT\Scout\TNTSearchScoutServiceProvider::class,
+        ScoutElastic\ScoutElasticServiceProvider::class,
 
     ],
 

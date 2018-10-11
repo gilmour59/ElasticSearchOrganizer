@@ -2,12 +2,14 @@
 
 namespace App;
 
-use Laravel\Scout\Searchable;
+use ScoutElastic\Searchable;
 use Illuminate\Database\Eloquent\Model;
 
 class ArchiveFile extends Model
 {
     use Searchable;
+
+    protected $indexConfigurator = ArchiveFileIndexConfigurator::class;
 
     public function category(){
         return $this->belongsTo('App\Division');
