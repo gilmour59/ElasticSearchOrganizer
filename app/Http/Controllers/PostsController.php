@@ -53,31 +53,20 @@ class PostsController extends Controller
         
         //dd($isShowAll);
 
-        $archiveFiles = $archiveFiles
-                ->search('test1')
-                ->orderBy($request->session()->get('field'), $request->session()->get('sort'))
-                ->paginate(10);
-
-        dd($archiveFiles);
-
-        /* if($request->session()->get('division') == 0){
+        if($request->session()->get('division') == 0){
             $archiveFiles = $archiveFiles
-                ->search('policy')
-                ->with('division')
-                ->select(['date', 'content', 'file_name', 'div_name'])
+                ->search($request->session()->get('search'))
                 ->orderBy($request->session()->get('field'), $request->session()->get('sort'))
                 ->paginate(10);
         }else{
                 $archiveFiles = $archiveFiles
-                    ->join('divisions', 'archive_files.division_id', '=', 'divisions.id')
-                    ->where('archive_files.division_id', '=', $request->session()->get('division'))
-                    ->when($isShowAll == false, function ($query) use ($searchIds){
-                        $query->whereIn('archive_files.id', $searchIds);
-                    })
-                    ->select('archive_files.*', 'divisions.div_name')
+                    ->search($request->session()->get('search'))
+                    ->where('division_id', $request->session()->get('division'))
                     ->orderBy($request->session()->get('field'), $request->session()->get('sort'))
                     ->paginate(10);
-            } */
+            }
+            //dd($request->session()->get('division'));
+            //dd($archiveFiles);
         
         /* if($request->session()->get('division') == 0){
             $archiveFiles = $archiveFiles

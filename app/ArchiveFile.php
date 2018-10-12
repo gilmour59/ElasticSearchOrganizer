@@ -22,6 +22,8 @@ class ArchiveFile extends Model
             'date' => $this->date,
             'content' => $this->content,
             'file_name' => $this->file_name,
+            'division_id' => $this->division_id,
+            'div_name' => $this->division->div_name
         ];
     }
 
