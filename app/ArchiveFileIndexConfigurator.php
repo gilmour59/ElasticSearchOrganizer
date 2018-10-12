@@ -9,6 +9,8 @@ class ArchiveFileIndexConfigurator extends IndexConfigurator
 {
     use Migratable;
 
+    protected $name = 'archivefile_index';  
+
     /**
      * @var array
      */

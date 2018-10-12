@@ -11,10 +11,10 @@ class ArchiveFile extends Model
 
     protected $indexConfigurator = ArchiveFileIndexConfigurator::class;
 
-    public function category(){
+    public function division(){
         return $this->belongsTo('App\Division');
     }
-    
+
     public function toSearchableArray()
     {
         return [
@@ -24,4 +24,26 @@ class ArchiveFile extends Model
             'file_name' => $this->file_name,
         ];
     }
+
+    protected $mapping = [
+        'properties' => [
+            'id' => [
+                'type' => 'integer',
+            ],
+            'date' => [
+                'type' => 'date',
+            ],
+            'content' => [
+                'type' => 'text',
+                'analyzer' => 'standard'
+            ],
+            'file_name' => [
+                'type' => 'text',
+                'analyzer' => 'standard'
+            ],
+            'division_id' => [
+                'type' => 'integer',
+            ]
+        ]
+    ];
 }
