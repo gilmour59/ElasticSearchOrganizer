@@ -43,9 +43,9 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        @if (count($archiveFiles) > 0)
-                            @foreach ($archiveFiles as $row)
+                    @if (count($archiveFiles) > 0)
+                        @foreach ($archiveFiles as $row)
+                            <tr>
                                 <td class="align-middle">{{ $row->id }}</td>
                                 <td class="align-middle">{{ $row->date }}</td>
                                 <td class="align-middle">{{ $row->file_name }}</td>
@@ -57,14 +57,16 @@
                                 <td class="align-middle"> 
                                     <a style="font-size:12px" href="javascript:if(confirm('Are you sure want to delete?')) ajaxDelete('{{ route('destroy', ['id' => $row->id]) }}','{{csrf_token()}}')" class="btn btn-danger">X</a>
                                 </td>
-                            @endforeach
-                        @else
+                            </tr>
+                        @endforeach
+                    @else
+                        <tr>
                             <td colspan="8">
                                 <p style="font-size:20px">No Records Found.</p>
                                 <p style="font-size:14px"><span style="color:red;">Change the Division</span> or <span style="color:red;">Empty the Search Field</span></p>
                             </td>
-                        @endif
-                    </tr>
+                        </tr>
+                    @endif
                 </tbody>
             </table>
             <ul class="pagination">

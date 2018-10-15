@@ -46,7 +46,7 @@ class ViewForSavingController extends Controller
                     $fileLastModified = filemtime($path . $file);
                     time() - $fileLastModified;
                     //24 hours in a day * 3600 seconds per hour
-                    if((time() - $fileLastModified) > 3600 && $file != '.' && $file != '..')
+                    if((time() - $fileLastModified) > 10 && $file != '.' && $file != '..')
                     {
                     unlink($path . $file);
                     }
@@ -60,6 +60,13 @@ class ViewForSavingController extends Controller
                 $fileNameToStore = $file->getClientOriginalName();
                 $fileNameToStore = time() . '' . $fileNameToStore;
 
+                $isDuplicate = false;
+
+                if(ArchiveFile::where('file_name', '=', pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME))->count() > 0) {
+                    dd(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME));
+                    $isDuplicate = true;
+                }
+                
                 $path = $file->storeAs('public/temp', $fileNameToStore); 
 
                 $parser = new Parser();
