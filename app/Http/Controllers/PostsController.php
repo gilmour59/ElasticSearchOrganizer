@@ -85,7 +85,6 @@ class PostsController extends Controller
 
     public function store(Request $request)
     {
-        //dd($request->session()->get('passData'));
         $passedData = $request->session()->get('passData');
         
         $rule = array();
@@ -96,7 +95,6 @@ class PostsController extends Controller
             $ruleDateOnly['saveDate' . $key] = ['required'];
         }
 
-        //dd($ruleDateOnly);
         $request->validate($ruleDateOnly);
 
         if(($request->input('saveAllDivision')) == 0){
@@ -105,21 +103,22 @@ class PostsController extends Controller
 
         //Loop Create new Data
         foreach($passedData as $key => $value){
-            //dd($key . ' + ' . $value['file_name']);
-            //dd($value);
-            $archiveFiles = new ArchiveFile();
 
-            sleep(1);
+            $archiveFiles = new ArchiveFile();
+            //sleep(1);
 
             if(($request->input('saveAllDivision')) == 0){
                 $div_key = $request->input('saveDivision' . $key);
             }else{
                 $div_key = $request->input('saveAllDivision');
             }
-            
             $archiveFiles->division_id = $div_key;
-            //$archiveFiles->date = $value['date'];
-            $archiveFiles->date = $request->input('saveDate' . $key);
+
+            $date = $request->input('saveDate' . $key);            
+            $archiveFiles->date = $date;
+
+            $year = date('Y', strtotime($date));
+
             $archiveFiles->content = $value['content'];
 
             $division = Division::find($div_key);
@@ -131,12 +130,12 @@ class PostsController extends Controller
             if($FileSys->exists(storage_path('app/public/temp/') . $value['file'])){
                 $file = $value['file'];
                 //dd($file);
-                Storage::move('public/temp/' .  $value['file'], 'public/' . $division->div_name . '/' . $file);
+                Storage::move('public/temp/' .  $value['file'], 'public/' . $division->div_name . '/' . $year . '/' . $file);
                 $archiveFiles->file = $file;
 
                 $archiveFiles->save(); 
             }else{
-                return redirect()->route('index')->with('error', 'Error in Saving!');
+                return redirect()->route('index')->with('error', 'File Not Found!');
             }
         }
         return redirect()->route('index')->with('success', 'Saved!');
@@ -160,7 +159,20 @@ class PostsController extends Controller
         //Find Data 
         $archiveFiles = ArchiveFile::find($id);
 
-        $archiveFiles->date = $request->input('editDate');
+        if($archiveFiles->date != $request->input('editDate')){
+            
+            $division = Division::find($archiveFiles->division_id);
+            
+            $dateOld = $archiveFiles->date;
+            $dateNew = $request->input('editDate');
+            
+            $yearOld = date('Y', strtotime($dateOld));
+            $yearNew = date('Y', strtotime($dateNew));
+
+            Storage::move('public/' . $division->div_name . '/' . $yearOld . '/' . $archiveFiles->file, 'public/' . $division->div_name . '/' . $yearNew . '/' . $archiveFiles->file);
+
+            $archiveFiles->date = $dateNew;
+        }
 
         if($archiveFiles->file_name != $request->input('editFileName')){
 
@@ -170,7 +182,9 @@ class PostsController extends Controller
             $extension = end($extension);
             $newFileName = time() . '' . $request->input('editFileName') . '.' . $extension;
 
-            Storage::move('public/' . $division->div_name . '/' . $archiveFiles->file, 'public/' . $division->div_name . '/' . $newFileName);
+            $year = date('Y', strtotime($archiveFiles->date));
+
+            Storage::move('public/' . $division->div_name . '/' . $year . '/' . $archiveFiles->file, 'public/' . $division->div_name . '/' . $year . '/' . $newFileName);
 
             $archiveFiles->file_name = $request->input('editFileName');
             $archiveFiles->file = $newFileName;
@@ -181,7 +195,9 @@ class PostsController extends Controller
             $divisionOld = Division::find($archiveFiles->division_id);
             $divisionNew = Division::find($request->input('editDivision'));
 
-            Storage::move('public/' . $divisionOld->div_name . '/' . $archiveFiles->file, 'public/' . $divisionNew->div_name . '/' . $archiveFiles->file);
+            $year = date('Y', strtotime($archiveFiles->date));
+
+            Storage::move('public/' . $divisionOld->div_name . '/' . $year . '/' . $archiveFiles->file, 'public/' . $divisionNew->div_name . '/' . $year . '/' . $archiveFiles->file);
 
             $archiveFiles->division_id = $request->input('editDivision');
         }
@@ -195,10 +211,11 @@ class PostsController extends Controller
             $fileNameToStore = time() . '' . $request->input('editFileName') . '.' . $extension;
 
             $division = Division::find($archiveFiles->division_id);
+            $year = date('Y', strtotime($archiveFiles->date));
 
             //Delete and Replace
-            Storage::delete('public/' . $division->div_name . '/' . $archiveFiles->file);
-            $path = $request->file('editFileUpload')->storeAs('public/' . $division->div_name . '/', $fileNameToStore);
+            Storage::delete('public/' . $division->div_name . '/' . $year . '/' . $archiveFiles->file);
+            $path = $request->file('editFileUpload')->storeAs('public/' . $division->div_name . '/' . $year . '/', $fileNameToStore);
 
             //Parse pdf
             $parser = new Parser();
@@ -239,7 +256,9 @@ class PostsController extends Controller
         $archiveFiles = ArchiveFile::findOrFail($id);
         $division = Division::find($archiveFiles->division_id);
 
-        Storage::delete('public/' . $division->div_name . '/' . $archiveFiles->file);
+        $year = date('Y', strtotime($archiveFiles->date));
+
+        Storage::delete('public/' . $division->div_name . '/' . $year . '/' . $archiveFiles->file);
         
         $archiveFiles->delete();
     }
@@ -258,7 +277,9 @@ class PostsController extends Controller
         $archiveFiles = ArchiveFile::find($id);
         $division = Division::find($archiveFiles->division_id);
 
-        return response()->file(storage_path('app/public/') . $division->div_name . '/' . $archiveFiles->file);
+        $year = date('Y', strtotime($archiveFiles->date));
+
+        return response()->file(storage_path('app/public/') . $division->div_name . '/' . $year . '/' . $archiveFiles->file);
     }
 
     public function download($id)
@@ -266,6 +287,8 @@ class PostsController extends Controller
         $archiveFiles = ArchiveFile::find($id);
         $division = Division::find($archiveFiles->division_id);
 
-        return response()->download(storage_path('app/public/') . $division->div_name . '/' . $archiveFiles->file);
+        $year = date('Y', strtotime($archiveFiles->date));
+
+        return response()->download(storage_path('app/public/') . $division->div_name . '/' . $year . '/' . $archiveFiles->file);
     }
 }

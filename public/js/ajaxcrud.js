@@ -69,7 +69,6 @@
 
     function ajaxDelete(filename, token, content) {
         content = typeof content !== 'undefined' ? content : 'content';
-        $('#loading').html('Deleting Record, Please Wait...');
         $('.loading').show();
         $.ajax({
             type: 'POST',

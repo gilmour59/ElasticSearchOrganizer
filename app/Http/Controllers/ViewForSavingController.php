@@ -43,10 +43,10 @@ class ViewForSavingController extends Controller
             if ($handle = opendir($path)) {
 
                 while (false !== ($file = readdir($handle))) { 
-                    $filelastmodified = filemtime($path . $file);
-                    time() - $filelastmodified;
+                    $fileLastModified = filemtime($path . $file);
+                    time() - $fileLastModified;
                     //24 hours in a day * 3600 seconds per hour
-                    if((time()-$filelastmodified) > 3600 && $file != '.' && $file != '..')
+                    if((time() - $fileLastModified) > 3600 && $file != '.' && $file != '..')
                     {
                     unlink($path . $file);
                     }
