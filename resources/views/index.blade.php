@@ -43,21 +43,28 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($archiveFiles as $row)
                     <tr>
-                        <td class="align-middle">{{ $row->id }}</td>
-                        <td class="align-middle">{{ $row->date }}</td>
-                        <td class="align-middle">{{ $row->file_name }}</td>
-                        <td style="text-align:left">{{ str_limit($row->content, 100) }}</td>
-                        <!-- [$row->division_id - 1] because it was converted to an array and was reindexed -->
-                        <td class="align-middle">{{ $division_name[$row->division_id - 1]['div_name'] }}</td>
-                        <td class="align-middle"> <a style="font-size:12px" href="{{route('view', ['id' => $row->id])}}" target="_blank" class="btn btn-success">View</a> </td>
-                        <td class="align-middle"> <button style="font-size:12px" type="button" class="btn btn-info" data-toggle="modal" data-target="#editFileModal" onclick="ajaxEdit('{{ route('edit', ['id' => $row->id]) }}')">Edit</button> </td>
-                        <td class="align-middle"> 
-                            <a style="font-size:12px" href="javascript:if(confirm('Are you sure want to delete?')) ajaxDelete('{{ route('destroy', ['id' => $row->id]) }}','{{csrf_token()}}')" class="btn btn-danger">X</a>
-                        </td>
+                        @if (count($archiveFiles) > 0)
+                            @foreach ($archiveFiles as $row)
+                                <td class="align-middle">{{ $row->id }}</td>
+                                <td class="align-middle">{{ $row->date }}</td>
+                                <td class="align-middle">{{ $row->file_name }}</td>
+                                <td style="text-align:left">{{ str_limit($row->content, 100) }}</td>
+                                <!-- [$row->division_id - 1] because it was converted to an array and was reindexed -->
+                                <td class="align-middle">{{ $division_name[$row->division_id - 1]['div_name'] }}</td>
+                                <td class="align-middle"> <a style="font-size:12px" href="{{route('view', ['id' => $row->id])}}" target="_blank" class="btn btn-success">View</a> </td>
+                                <td class="align-middle"> <button style="font-size:12px" type="button" class="btn btn-info" data-toggle="modal" data-target="#editFileModal" onclick="ajaxEdit('{{ route('edit', ['id' => $row->id]) }}')">Edit</button> </td>
+                                <td class="align-middle"> 
+                                    <a style="font-size:12px" href="javascript:if(confirm('Are you sure want to delete?')) ajaxDelete('{{ route('destroy', ['id' => $row->id]) }}','{{csrf_token()}}')" class="btn btn-danger">X</a>
+                                </td>
+                            @endforeach
+                        @else
+                            <td colspan="8">
+                                <p style="font-size:20px">No Records Found.</p>
+                                <p style="font-size:14px"><span style="color:red;">Change the Division</span> or <span style="color:red;">Empty the Search Field</span></p>
+                            </td>
+                        @endif
                     </tr>
-                    @endforeach
                 </tbody>
             </table>
             <ul class="pagination">

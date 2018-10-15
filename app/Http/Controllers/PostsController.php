@@ -78,7 +78,7 @@ class PostsController extends Controller
         $division_name = Division::get()->toArray();
 
         if($request->ajax()){
-            return view('index')->with('archiveFiles', $archiveFiles)->with('division', $division)->with('division_name', $division_name);
+            return view('index')->with('archiveFiles', $archiveFiles)->with('division_name', $division_name);
         }
         return view('ajax')->with('archiveFiles', $archiveFiles)->with('division', $division)->with('division_name', $division_name);
     }
