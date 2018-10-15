@@ -57,14 +57,20 @@ class ViewForSavingController extends Controller
             foreach($request->file('addFileUpload') as $file)
             {
                 $file_name = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-                $fileNameToStore = $file->getClientOriginalName();
-                $fileNameToStore = time() . '' . $fileNameToStore;
 
                 $isDuplicate = false;
-
-                if(ArchiveFile::where('file_name', '=', pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME))->count() > 0) {
-                    dd(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME));
+                
+                //For Dupes
+                if(ArchiveFile::where('file_name', '=', $file_name)->count() > 0) {
+                    
                     $isDuplicate = true;
+
+                    $file_ext = explode(".", $file->getClientOriginalName());
+                    $file_ext = end($file_ext);
+                    $fileNameToStore = $file_name . '_' . ((ArchiveFile::where('file_name', '=', $file_name)->count()) + 1) . '.' . $file_ext;
+                }else{
+                    
+                    $fileNameToStore = $file->getClientOriginalName();
                 }
                 
                 $path = $file->storeAs('public/temp', $fileNameToStore); 
@@ -79,7 +85,7 @@ class ViewForSavingController extends Controller
                     alert('Parsing Error');
                     return view('index');
                 }
-                $data[] = array('file' => $fileNameToStore, 'file_name' => $file_name ,'date' => $date, 'content' => $text, 'key_div' => $key_div);  
+                $data[] = array('isDuplicate' => $isDuplicate, 'file' => $fileNameToStore, 'file_name' => $file_name, 'date' => $date, 'content' => $text, 'key_div' => $key_div);  
             }
             $passData = $data;
             $request->session()->put('passData', $passData);

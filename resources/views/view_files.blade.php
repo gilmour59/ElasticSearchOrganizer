@@ -64,6 +64,7 @@
         <div class="row pb-1">
             <div class="col-sm-6">
                 <span>Error in IDs: </span>
+                {{dd($passData)}}
                 @foreach ($passData as $key => $row)
                     @if($row['key_div'] == 0)
                         <span style="color:red;">{{$key . ', '}}</span>
