@@ -36,74 +36,56 @@ class PostsController extends Controller
                 ->has('sort') ? $request->get('sort') : ($request->session()
                 ->has('sort') ? $request->session()->get('sort') : 'desc'));
 
-        $archiveFileIds = new ArchiveFile();
         $archiveFiles = new ArchiveFile();
-
-        //$archiveFileIds = $archiveFileIds->search($request->session()->get('search'))->raw();
-        //$searchIds = $archiveFileIds['hits']['total'];
-        //dd($searchIds);
-        
-        //dd(ArchiveFile::search('policy')->with('division')->get());
 
         if(empty($request->session()->get('search'))){
             $isShowAll = true;
         }else{
             $isShowAll = false;
         }
-        
-        //dd($isShowAll);
 
         if($request->session()->get('division') == 0){
-            $archiveFiles = $archiveFiles
-                ->search($request->session()->get('search'))
-                ->orderBy($request->session()->get('field'), $request->session()->get('sort'))
-                ->paginate(10);
+            if($isShowAll){
+                $archiveFiles = $archiveFiles
+                    ->join('divisions', 'archive_files.division_id', '=', 'divisions.id')
+                    ->select('archive_files.*', 'divisions.div_name')
+                    ->orderBy($request->session()->get('field'), $request->session()->get('sort'))
+                    ->paginate(10);
+            }else{
+                $archiveFiles = $archiveFiles
+                    ->search($request->session()->get('search'))
+                    ->orderBy($request->session()->get('field'), $request->session()->get('sort'))
+                    ->paginate(10);
+            }
         }else{
+            if($isShowAll){
+                $archiveFiles = $archiveFiles
+                    ->join('divisions', 'archive_files.division_id', '=', 'divisions.id')
+                    ->select('archive_files.*', 'divisions.div_name')
+                    ->where('archive_files.division_id', '=', $request->session()->get('division'))
+                    ->orderBy($request->session()->get('field'), $request->session()->get('sort'))
+                    ->paginate(10);
+            }else{
                 $archiveFiles = $archiveFiles
                     ->search($request->session()->get('search'))
                     ->where('division_id', $request->session()->get('division'))
                     ->orderBy($request->session()->get('field'), $request->session()->get('sort'))
                     ->paginate(10);
-            }
-            //dd($request->session()->get('division'));
-            //dd($archiveFiles);
-        
-        /* if($request->session()->get('division') == 0){
-            $archiveFiles = $archiveFiles
-                ->join('divisions', 'archive_files.division_id', '=', 'divisions.id')
-                ->when($isShowAll == false, function ($query) use ($searchIds){
-                    $query->whereIn('archive_files.id', $searchIds);
-                })
-                ->select('archive_files.*', 'divisions.div_name')
-                ->orderBy($request->session()->get('field'), $request->session()->get('sort'))
-                ->paginate(10);
-        }else{
-                $archiveFiles = $archiveFiles
-                    ->join('divisions', 'archive_files.division_id', '=', 'divisions.id')
-                    ->where('archive_files.division_id', '=', $request->session()->get('division'))
-                    ->when($isShowAll == false, function ($query) use ($searchIds){
-                        $query->whereIn('archive_files.id', $searchIds);
-                    })
-                    ->select('archive_files.*', 'divisions.div_name')
-                    ->orderBy($request->session()->get('field'), $request->session()->get('sort'))
-                    ->paginate(10);
-            } */
+            }  
+        }
 
-            $division = $request->session()->get('division');
+        $division = $request->session()->get('division');
+        $division_name = Division::get()->toArray();
 
-            $division_name = Division::get()->toArray();
-
-            if($request->ajax()){
-                return view('index')->with('archiveFiles', $archiveFiles)->with('division', $division)->with('division_name', $division_name);
-            }
-            return view('ajax')->with('archiveFiles', $archiveFiles)->with('division', $division)->with('division_name', $division_name);
+        if($request->ajax()){
+            return view('index')->with('archiveFiles', $archiveFiles)->with('division', $division)->with('division_name', $division_name);
+        }
+        return view('ajax')->with('archiveFiles', $archiveFiles)->with('division', $division)->with('division_name', $division_name);
     }
 
     public function store(Request $request)
     {
         //dd($request->session()->get('passData'));
-        //dd($request->all());
-
         $passedData = $request->session()->get('passData');
         
         $rule = array();
@@ -257,11 +239,8 @@ class PostsController extends Controller
         $archiveFiles = ArchiveFile::findOrFail($id);
         $division = Division::find($archiveFiles->division_id);
 
-        $archiveFiles->unsearchable();
-
         Storage::delete('public/' . $division->div_name . '/' . $archiveFiles->file);
         
-        //$archiveFiles->unsearchable();
         $archiveFiles->delete();
     }
 
