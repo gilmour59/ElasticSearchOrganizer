@@ -149,6 +149,7 @@
                     if(number[i] == 0){
                         $('#saveDivision'+i).append(divisionZero);
                         $('#saveDivision'+i).val(number[i]).trigger('change');    
+                        $('#saveDivision'+i).css({"border": "1px red solid"});
                     }else{
                         $('#saveDivision'+i).append(division);
                         $('#saveDivision'+i).val(number[i]).trigger('change');   

@@ -62,16 +62,7 @@
         @endif
                     
         <div class="row pb-1">
-            <div class="col-sm-6">
-                <span>Error in IDs: </span>
-                {{dd($passData)}}
-                @foreach ($passData as $key => $row)
-                    @if($row['key_div'] == 0)
-                        <span style="color:red;">{{$key . ', '}}</span>
-                    @endif
-                @endforeach
-            </div>
-            <div class="col-sm-4">
+            <div class="offset-6 col-sm-4">
                 <div class="row">
                     <div class="col-sm-5 pt-2 text-right">
                         <label for="addDivision">Select All:</label>
@@ -99,7 +90,7 @@
                             <th width="1%">
                                 ID: 
                             </th>
-                            <th width="4%">
+                            <th width="5%">
                                 File Name: 
                             </th>
                             <th width="1%">
@@ -131,7 +122,11 @@
                                     </script>
 
                                     <td class="align-middle">{{ $key }}</td>
+                                    @if($row['isDuplicate']) <!--Check if Dupe-->
+                                    <td class="align-middle"><span style="color:red;">(File with the Same Name Found)</span> <br> <span>{{ $row['file_name'] }}</span></td>
+                                    @else
                                     <td class="align-middle">{{ $row['file_name'] }}</td>
+                                    @endif
                                     <td class="align-middle">
                                         <input class="changeDate form-control" type="date" name="saveDate{{ $key }}" id="saveDate{{ $key }}" value="<?php echo old('saveDate' . $key) ? old('saveDate' . $key) : $row['date'] ?>">
                                     </td>
@@ -140,6 +135,16 @@
                                         <select class="changeDivision form-control col-sm-10" id="saveDivision{{ $key }}" name="saveDivision{{ $key }}">
                                             <!-- ajax generate -->
                                         </select>
+
+                                        <script>
+                                            $('#saveDivision{{ $key }}').change(function(){
+                                                if($('#saveDivision{{ $key }}').val() > 0){
+                                                    $('#saveDivision{{ $key }}').css({"border": "1px solid #ced4da"});
+                                                }else{
+                                                    $('#saveDivision{{ $key }}').css({"border": "red solid 1px"});
+                                                }
+                                            });
+                                        </script>
                                     </td>
                                     <td class="align-middle">
                                         <button type="button" class="btn btn-danger" id="delete{{ $key }}" name="delete{{ $key }}" onclick='location.href="?delete={{ $key }}"'>x</button>

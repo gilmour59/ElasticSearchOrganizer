@@ -54,6 +54,7 @@ class ViewForSavingController extends Controller
                 closedir($handle); 
             }
 
+            $passData = [];
             foreach($request->file('addFileUpload') as $file)
             {
                 $file_name = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
@@ -85,9 +86,16 @@ class ViewForSavingController extends Controller
                     alert('Parsing Error');
                     return view('index');
                 }
-                $data[] = array('isDuplicate' => $isDuplicate, 'file' => $fileNameToStore, 'file_name' => $file_name, 'date' => $date, 'content' => $text, 'key_div' => $key_div);  
+
+                $data = array('isDuplicate' => $isDuplicate, 'file' => $fileNameToStore, 'file_name' => $file_name, 'date' => $date, 'content' => $text, 'key_div' => $key_div);  
+
+                if($isDuplicate || ($key_div == 0)){
+                    array_unshift($passData, $data);
+                }else{
+                    array_push($passData, $data);
+                }
             }
-            $passData = $data;
+
             $request->session()->put('passData', $passData);
         }
         return view('view_files')->with('passData', $passData);
