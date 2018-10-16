@@ -237,14 +237,17 @@ class PostsController extends Controller
             //get File Name
             //$fileNameWithExtension = $request->file('editFileUpload')->getClientOriginalName();
             $extension = $request->file('editFileUpload')->getClientOriginalExtension();
-            $fileNameToStore = time() . '' . $request->input('editFileName') . '.' . $extension;
+            $fileNameToStore = $request->input('editFileName') . '.' . $extension;
 
             $division = Division::find($archiveFiles->division_id);
             $year = date('Y', strtotime($archiveFiles->date));
 
             //Delete and Replace
             Storage::delete('public/' . $division->div_name . '/' . $year . '/' . $archiveFiles->file);
-            $path = $request->file('editFileUpload')->storeAs('public/' . $division->div_name . '/' . $year . '/', $fileNameToStore);
+
+            $newName = $this->incrementFileName(storage_path('app/public/' . $division->div_name . '/' . $year . '/'),  $fileNameToStore);
+            
+            $path = $request->file('editFileUpload')->storeAs('public/' . $division->div_name . '/' . $year . '/', $newName);
 
             //Parse pdf
             $parser = new Parser();
@@ -259,7 +262,7 @@ class PostsController extends Controller
                 ]);
             }
             $archiveFiles->file_name = $request->input('editFileName');
-            $archiveFiles->file = $fileNameToStore;
+            $archiveFiles->file = $newName;
         }
         $archiveFiles->save();
 
