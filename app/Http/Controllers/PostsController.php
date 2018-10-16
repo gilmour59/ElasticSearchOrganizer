@@ -128,10 +128,11 @@ class PostsController extends Controller
 
             //Add Year of the files
             if($FileSys->exists(storage_path('app/public/temp/') . $value['file'])){
-                $file = $value['file'];
-                //dd($file);
-                Storage::move('public/temp/' .  $value['file'], 'public/' . $division->div_name . '/' . $year . '/' . $file);
-                $archiveFiles->file = $file;
+
+                $newName = $this->incrementFileName(storage_path('app/public/' . $division->div_name . '/' . $year . '/'),  $value['file']);
+
+                Storage::move('public/temp/' .  $value['file'], 'public/' . $division->div_name . '/' . $year . '/' . $newName);
+                $archiveFiles->file = $newName;
 
                 $archiveFiles->save(); 
             }else{
@@ -140,6 +141,25 @@ class PostsController extends Controller
         }
         return redirect()->route('index')->with('success', 'Saved!');
     }
+
+    function incrementFileName($file_path,$filename){
+
+        if(count(glob($file_path. '' .$filename))>0){
+
+            $file_ext = explode(".", $filename);
+            $file_ext = end($file_ext);
+            $file_name = str_replace(('.'.$file_ext),"",$filename);
+            $newfilename = $file_name.'_'.(count(glob($file_path."$file_name*.$file_ext")) + 1).'.'.$file_ext;
+
+            return $newfilename;
+        }else{
+
+            return $filename;
+        }
+    }
+
+    //$newName = incrementFileName( "uploads/", $_FILES["my_file"]["name"] );
+    //move_uploaded_file($_FILES["my_file"]["tmp_name"],"uploads/".$newName);
 
     public function update(Request $request, $id)
     {
@@ -169,9 +189,12 @@ class PostsController extends Controller
             $yearOld = date('Y', strtotime($dateOld));
             $yearNew = date('Y', strtotime($dateNew));
 
-            Storage::move('public/' . $division->div_name . '/' . $yearOld . '/' . $archiveFiles->file, 'public/' . $division->div_name . '/' . $yearNew . '/' . $archiveFiles->file);
+            $newName = $this->incrementFileName(storage_path('app/public/' . $division->div_name . '/' . $yearNew . '/'),  $archiveFiles->file);
+
+            Storage::move('public/' . $division->div_name . '/' . $yearOld . '/' . $archiveFiles->file, 'public/' . $division->div_name . '/' . $yearNew . '/' . $newName);
 
             $archiveFiles->date = $dateNew;
+            $archiveFiles->file = $newName;
         }
 
         if($archiveFiles->file_name != $request->input('editFileName')){
@@ -180,14 +203,17 @@ class PostsController extends Controller
 
             $extension = explode(".", $archiveFiles->file);
             $extension = end($extension);
-            $newFileName = time() . '' . $request->input('editFileName') . '.' . $extension;
+
+            $newFileName = $request->input('editFileName') . '.' . $extension;
 
             $year = date('Y', strtotime($archiveFiles->date));
 
-            Storage::move('public/' . $division->div_name . '/' . $year . '/' . $archiveFiles->file, 'public/' . $division->div_name . '/' . $year . '/' . $newFileName);
+            $newName = $this->incrementFileName(storage_path('app/public/' . $division->div_name . '/' . $year . '/'),  $newFileName);
+
+            Storage::move('public/' . $division->div_name . '/' . $year . '/' . $archiveFiles->file, 'public/' . $division->div_name . '/' . $year . '/' . $newName);
 
             $archiveFiles->file_name = $request->input('editFileName');
-            $archiveFiles->file = $newFileName;
+            $archiveFiles->file = $newName;
         }
 
         if($archiveFiles->division_id != $request->input('editDivision')){
@@ -197,9 +223,12 @@ class PostsController extends Controller
 
             $year = date('Y', strtotime($archiveFiles->date));
 
-            Storage::move('public/' . $divisionOld->div_name . '/' . $year . '/' . $archiveFiles->file, 'public/' . $divisionNew->div_name . '/' . $year . '/' . $archiveFiles->file);
+            $newName = $this->incrementFileName(storage_path('app/public/' . $divisionNew->div_name . '/' . $year . '/'),  $archiveFiles->file);
+
+            Storage::move('public/' . $divisionOld->div_name . '/' . $year . '/' . $archiveFiles->file, 'public/' . $divisionNew->div_name . '/' . $year . '/' . $newName);
 
             $archiveFiles->division_id = $request->input('editDivision');
+            $archiveFiles->file = $newName;
         }
 
         //Handle File Upload

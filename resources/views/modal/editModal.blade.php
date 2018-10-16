@@ -24,7 +24,8 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="editFileName">File Name:</label>
+                            <label for="editFileName">File Name: </label>
+                            <small class="d-block" style="color:brown;">Warning: file names can be duplicated</small>
                             <input type="text" class="form-control" id="editFileName" name="editFileName">
                             <span id="error-editFileName" class="invalid-feedback"></span>
                         </div>

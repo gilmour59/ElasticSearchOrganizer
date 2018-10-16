@@ -63,16 +63,10 @@ class ViewForSavingController extends Controller
                 
                 //For Dupes
                 if(ArchiveFile::where('file_name', '=', $file_name)->count() > 0) {
-                    
                     $isDuplicate = true;
-
-                    $file_ext = explode(".", $file->getClientOriginalName());
-                    $file_ext = end($file_ext);
-                    $fileNameToStore = $file_name . '_' . ((ArchiveFile::where('file_name', '=', $file_name)->count()) + 1) . '.' . $file_ext;
-                }else{
-                    
-                    $fileNameToStore = $file->getClientOriginalName();
                 }
+                
+                $fileNameToStore = $file->getClientOriginalName();
                 
                 $path = $file->storeAs('public/temp', $fileNameToStore); 
 

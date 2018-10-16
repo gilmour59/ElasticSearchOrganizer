@@ -48,7 +48,7 @@
                             <tr>
                                 <td class="align-middle">{{ $row->id }}</td>
                                 <td class="align-middle">{{ $row->date }}</td>
-                                <td class="align-middle">{{ $row->file_name }}</td>
+                                <td class="align-middle">{{ $row->file }}</td>
                                 <td style="text-align:left">{{ str_limit($row->content, 100) }}</td>
                                 <!-- [$row->division_id - 1] because it was converted to an array and was reindexed -->
                                 <td class="align-middle">{{ $division_name[$row->division_id - 1]['div_name'] }}</td>
