@@ -20,6 +20,7 @@
 - MAIL_USERNAME=gilmouralmalbisdev@gmail.com
 - MAIL_PASSWORD=heheksdi1
 - MAIL_ENCRYPTION=tls
+- SCOUT_DRIVER=elastic
 
 #Elasticsearch
 https://github.com/babenkoivan/scout-elasticsearch-driver
@@ -42,3 +43,17 @@ https://github.com/babenkoivan/scout-elasticsearch-driver
 5. php artisan elastic:update-mapping App\\ArchiveFile
 
 6. php artisan scout:import "App\ArchiveFile"
+
+
+#Super Admin
+- has access to all 
+- right to create user 
+- right to delete user
+
+TODO: Create interface for creating and deleting users
+
+#Admin
+- can CRUD records
+
+#Normal User 
+-can only view files
