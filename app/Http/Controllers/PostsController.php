@@ -15,7 +15,8 @@ class PostsController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:web,admin'); //$this->middleware('auth');
+        //To prioritize admin name in the nav
+        $this->middleware('auth:admin,web'); //The important guards are in the web routes; 
     }
 
     public function index(Request $request)

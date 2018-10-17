@@ -3,10 +3,12 @@
                 <h6>Total Data: <span id="total_records"></span></h6>
             </div>
             <div class="col-sm-6 pb-1 align-self-end"  style="text-align:right;">
+                @auth('admin')
                 <!-- Button trigger modal -->
                 <button id="addFilebtn" type="button" class="btn btn-primary" data-toggle="modal" data-target="#addFileModal">
                     Add
                 </button>
+                @endauth
             </div>
         </div>
         <div class="table-responsive" style="font-size:14px">
@@ -38,8 +40,10 @@
                             Division
                         </th>
                         <th width="1%"></th>
+                        @auth('admin')
                         <th width="1%"></th>
                         <th width="1%"></th>
+                        @endauth
                     </tr>
                 </thead>
                 <tbody>
@@ -53,10 +57,12 @@
                                 <!-- [$row->division_id - 1] because it was converted to an array and was reindexed -->
                                 <td class="align-middle">{{ $division_name[$row->division_id - 1]['div_name'] }}</td>
                                 <td class="align-middle"> <a style="font-size:12px" href="{{route('view', ['id' => $row->id])}}" target="_blank" class="btn btn-success">View</a> </td>
+                                @auth('admin')
                                 <td class="align-middle"> <button style="font-size:12px" type="button" class="btn btn-info" data-toggle="modal" data-target="#editFileModal" onclick="ajaxEdit('{{ route('edit', ['id' => $row->id]) }}')">Edit</button> </td>
                                 <td class="align-middle"> 
                                     <a style="font-size:12px" href="javascript:if(confirm('Are you sure want to delete?')) ajaxDelete('{{ route('destroy', ['id' => $row->id]) }}','{{csrf_token()}}')" class="btn btn-danger">X</a>
                                 </td>
+                                @endauth
                             </tr>
                         @endforeach
                     @else

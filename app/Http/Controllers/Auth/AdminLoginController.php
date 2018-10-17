@@ -14,6 +14,7 @@ class AdminLoginController extends Controller
     }
 
     public function showLoginForm(){
+        Auth::guard('web')->logout();
         return view('auth.admin-login');
     }
 
@@ -34,7 +35,7 @@ class AdminLoginController extends Controller
         //attempt to log the user in 
         if(Auth::guard('admin')->attempt($credentials, $remember) /*declare the guard and attempt*/){
             //if successful, then redirect to intended location
-            return redirect()->intended(route('admin')); 
+            return redirect()->intended(route('index')); 
             //intended redirects user back to where they where going after they successfully logged in or the url in the argument
         }else{
             //if unsuccessful, then redirect to log in form with form data

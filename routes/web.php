@@ -19,17 +19,17 @@ Route::prefix('admin')->group(function(){
 
 Route::get('/division', 'PostsController@division')->name('division');
 
-Route::get('/view_files', 'ViewForSavingController@deleteViewFile');
-Route::post('/view_files', 'ViewForSavingController@viewFiles')->name('view_files');
+Route::get('/view_files', 'ViewForSavingController@deleteViewFile')->middleware('auth:admin');
+Route::post('/view_files', 'ViewForSavingController@viewFiles')->name('view_files')->middleware('auth:admin');
 
-Route::get('/', 'PostsController@index')->name('index');
-Route::post('/store', 'PostsController@store')->name('store');
-Route::get('/get/{id}', 'PostsController@edit')->name('edit');
-Route::put('/update/{id}', 'PostsController@update')->name('update');
-Route::delete('destroy/{id}', 'PostsController@destroy')->name('destroy');
+Route::get('/', 'PostsController@index')->name('index')->middleware('auth:web,admin');
+Route::post('/store', 'PostsController@store')->name('store')->middleware('auth:admin');
+Route::get('/get/{id}', 'PostsController@edit')->name('edit')->middleware('auth:admin');
+Route::put('/update/{id}', 'PostsController@update')->name('update')->middleware('auth:admin');
+Route::delete('destroy/{id}', 'PostsController@destroy')->name('destroy')->middleware('auth:admin');
 
-Route::get('/view/{id}', 'PostsController@view')->name('view');
-Route::get('/download/{id}', 'PostsController@download')->name('download');
+Route::get('/view/{id}', 'PostsController@view')->name('view')->middleware('auth:admin,web');
+Route::get('/download/{id}', 'PostsController@download')->name('download')->middleware('auth:admin,web');
 
 Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
