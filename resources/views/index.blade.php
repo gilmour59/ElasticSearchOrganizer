@@ -13,28 +13,28 @@
             <table class="table table-striped table-bordered text-center">
                 <thead>
                     <tr>
-                        <th width="1%">
+                        <th width="50">
                             <a href="javascript:ajaxLoad('{{url('/?field=id&sort='.(request()->session()->get('sort')=='asc'?'desc':'asc'))}}')">
                                 ID{{request()->session()->get('field')=='id'?(request()->session()->get('sort')=='asc'?'▴':'▾'):''}}
                             </a>
                         </th>
-                        <th width="1%">
+                        <th width="80">
                             <a href="javascript:ajaxLoad('{{url('/?field=date&sort='.(request()->session()->get('sort')=='asc'?'desc':'asc'))}}')">
                                 Date{{request()->session()->get('field')=='date'?(request()->session()->get('sort')=='asc'?'▴':'▾'):''}}
                             </a>
                             <small class="d-block">yyyy/mm/dd</small>
                         </th>
-                        <th width="1%">
+                        <th width="80">
                             <a href="javascript:ajaxLoad('{{url('/?field=file_name&sort='.(request()->session()->get('sort')=='asc'?'desc':'asc'))}}')">
                                 File Name{{request()->session()->get('field')=='file_name'?(request()->session()->get('sort')=='asc'?'▴':'▾'):''}}
                             </a>
                         </th>
-                        <th width="15%">
+                        <th width="200">
                             <a href="javascript:ajaxLoad('{{url('/?field=content&sort='.(request()->session()->get('sort')=='asc'?'desc':'asc'))}}')">
                                 Content{{request()->session()->get('field')=='content'?(request()->session()->get('sort')=='asc'?'▴':'▾'):''}}
                             </a>
                         </th>
-                        <th width="1%">
+                        <th width="40">
                             Division
                         </th>
                         <th width="1%"></th>
