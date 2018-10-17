@@ -19,4 +19,4 @@ composer install:
 2. Run elasticsearch.bat
 3. php artisan elastic:create-index App\\ArchiveFileIndexConfigurator
 4. php artisan elastic:update-mapping App\\ArchiveFile
-5. hp artisan scout:import "App\ArchiveFile"
+5. php artisan scout:import "App\ArchiveFile"

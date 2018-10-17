@@ -115,9 +115,9 @@
                                 @foreach ($passData as $key => $row)
                                 <tr>
                                     <script>
-                                        var div = {{$key}}
+                                        var fileIndex = {{$key}}
                                         var key_div = {{$row['key_div']}}
-                                        num[div] = key_div;
+                                        num[fileIndex] = key_div;
                                         console.log(key_div);
                                     </script>
 
