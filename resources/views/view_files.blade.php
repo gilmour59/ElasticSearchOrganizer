@@ -87,19 +87,19 @@
                 <table class="table table-striped table-bordered text-center">
                     <thead>
                         <tr>
-                            <th width="1%">
+                            <th width="50">
                                 ID: 
                             </th>
-                            <th width="5%">
+                            <th width="200">
                                 File Name: 
                             </th>
                             <th width="1%">
                                 Date: 
                             </th>
-                            <th width="15%">
+                            <th width="90">
                                 Content
                             </th>
-                            <th width="10%">
+                            <th width="200">
                                 Division
                             </th>
                             <th width="1%">
@@ -123,9 +123,9 @@
 
                                     <td class="align-middle">{{ $key }}</td>
                                     @if($row['isDuplicate']) <!--Check if Dupe-->
-                                    <td class="align-middle"><span style="color:red;">(File with the Same Name Found)</span> <br> <span>{{ $row['file_name'] }}</span></td>
+                                    <td class="align-middle"><span style="color:red;">(File with the Same Name Found)</span> <br> <input class="changeFileName form-control" type="text" name="saveFileName{{ $key }}" id="saveFileName{{ $key }}" value="<?php echo old('saveFileName' . $key) ? old('saveFileName' . $key) : $row['file_name'] ?>"></td>
                                     @else
-                                    <td class="align-middle">{{ $row['file_name'] }}</td>
+                                    <td class="align-middle"><input class="changeFileName form-control" type="text" name="saveFileName{{ $key }}" id="saveFileName{{ $key }}" value="<?php echo old('saveFileName' . $key) ? old('saveFileName' . $key) : $row['file_name'] ?>"></td>
                                     @endif
                                     <td class="align-middle">
                                         <input class="changeDate form-control" type="date" name="saveDate{{ $key }}" id="saveDate{{ $key }}" value="<?php echo old('saveDate' . $key) ? old('saveDate' . $key) : $row['date'] ?>">
@@ -151,7 +151,6 @@
                                     </td>
                                 </tr>
                                 <input type="hidden" name="saveId{{ $key }}" id="saveId{{ $key }}" value="{{ $key }}">
-                                <input type="hidden" name="saveFileName{{ $key }}" id="saveFileName{{ $key }}" value="{{ $row['file_name'] }}">
                                 <input type="hidden" name="saveContent{{ $key }}" id="saveContent{{ $key }}" value="{{ $row['content'] }}">
                                 @endforeach
                                 <input type="hidden" name="saveAllDivision" id="saveAllDivision" value="0">
@@ -179,11 +178,24 @@
             ajaxDivisionGenerateForViewFiles('division', num); 
         });
 
+        $(function(){
+            $('input[type=text]').keypress(function(event) {
+                if (event.keyCode == 13) {
+                event.preventDefault();
+                }
+            });
+        });
+
         //Disables Submit Button If no division is selected
         $('#allDivision').change(function(){
             if($('#allDivision').val() == 0){
-                $('.changeDivision, .changeDate').trigger('change');
-                $('.changeDivision, .changeDate').change(function(){
+
+                $('#changeDivision').find(".changeDivision").removeAttr('disabled');
+                $('#saveAllDivision').val(0);
+
+                $('.changeDivision, .changeDate, .changeFileName').trigger('change');
+
+                $('.changeDivision, .changeDate, .changeFileName').change(function(){
                     var isValid = true
                     $('.changeDivision').each(function(){
                         if ($(this).val() == 0)
@@ -193,6 +205,12 @@
                         if ($(this).val() == false)
                             isValid = false;
                     });
+
+                    $('.changeFileName').each(function(){
+                        if ($(this).val() == false)
+                            isValid = false;
+                    });
+
                     if( isValid ) {
                         $('#submitBtn').prop('disabled', false);
                     } else {
@@ -200,37 +218,54 @@
                     }
                 });        
             }else{
-                $('#submitBtn').prop('disabled', false);
+
+                $('#changeDivision').find(".changeDivision").attr('disabled', true);
+                $('#saveAllDivision').val($('#allDivision').val());
+
+                var isValid = true
+
+                $('.changeDate').each(function(){
+                    if ($(this).val() == false)
+                        isValid = false;
+                });
+
+                $('.changeFileName').each(function(){
+                    if ($(this).val() == false)
+                        isValid = false;
+                });
+
+                if( isValid ) {
+                    $('#submitBtn').prop('disabled', false);
+                } else {
+                    $('#submitBtn').prop('disabled', true);
+                }
             }
         });
 
-        $('.changeDivision, .changeDate').change(function(){
+        $('.changeDivision, .changeDate, .changeFileName').change(function(){
             var isValid = true
-            $('.changeDivision').each(function(){
-                if ($(this).val() == 0)
-                    isValid = false;
-            });
 
+            if($('#allDivision').val() == 0){
+                $('.changeDivision').each(function(){
+                    if ($(this).val() == 0)
+                        isValid = false;
+                });
+            }
+            
             $('.changeDate').each(function(){
                 if ($(this).val() == false)
                     isValid = false;
             });
-             if( isValid ) {
+
+            $('.changeFileName').each(function(){
+                if ($(this).val() == false)
+                    isValid = false;
+            });
+
+            if( isValid ) {
                 $('#submitBtn').prop('disabled', false);
             } else {
                 $('#submitBtn').prop('disabled', true);
-            }
-        });
-
-        $('#allDivision').change(function() { 
-            if($('#allDivision').val() == 0){
-                //remove disabled of children
-                $('#changeDivision').find(".changeDivision").removeAttr('disabled');
-                $('#saveAllDivision').val(0);
-            }else if($('#allDivision').val() > 0){
-                //$('#changeDivision').find(".changeDivision").val($('#allDivision').val());
-                $('#changeDivision').find(".changeDivision").attr('disabled', true);
-                $('#saveAllDivision').val($('#allDivision').val());
             }
         });
 

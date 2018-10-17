@@ -88,14 +88,16 @@ class PostsController extends Controller
         $passedData = $request->session()->get('passData');
         
         $rule = array();
-        $ruleDateOnly = array();
+        $ruleDateFileNameOnly = array();
         foreach($passedData as $key => $value){
             $rule['saveDivision' . $key] = ['required', new checkForUndetectedTextContent];
             $rule['saveDate' . $key] = ['required'];
-            $ruleDateOnly['saveDate' . $key] = ['required'];
+            $rule['saveFileName' . $key] = ['required'];
+            $ruleDateFileNameOnly['saveDate' . $key] = ['required'];
+            $ruleDateFileNameOnly['saveFileName' . $key] = ['required'];
         }
 
-        $request->validate($ruleDateOnly);
+        $request->validate($ruleDateFileNameOnly);
 
         if(($request->input('saveAllDivision')) == 0){
             $request->validate($rule);
@@ -119,13 +121,13 @@ class PostsController extends Controller
 
             $year = date('Y', strtotime($date));
 
-            $archiveFiles->content = $value['content'];
+            $archiveFiles->content = $request->input('saveContent' . $key);
 
             $division = Division::find($div_key);
 
-            $archiveFiles->file_name = $value['file_name'];
-            $FileSys = new Filesystem();
+            $archiveFiles->file_name = $request->input('saveFileName' . $key);
 
+            $FileSys = new Filesystem();
             //Add Year of the files
             if($FileSys->exists(storage_path('app/public/temp/') . $value['file'])){
 
