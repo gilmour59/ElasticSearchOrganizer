@@ -131,7 +131,10 @@ class PostsController extends Controller
             //Add Year of the files
             if($FileSys->exists(storage_path('app/public/temp/') . $value['file'])){
 
-                $newName = $this->incrementFileName(storage_path('app/public/' . $division->div_name . '/' . $year . '/'),  $value['file']);
+                $extension = explode(".", $value['file']);
+                $extension = end($extension);
+
+                $newName = $this->incrementFileName(storage_path('app/public/' . $division->div_name . '/' . $year . '/'),  ($request->input('saveFileName' . $key) . '.' . $extension));
 
                 Storage::move('public/temp/' .  $value['file'], 'public/' . $division->div_name . '/' . $year . '/' . $newName);
                 $archiveFiles->file = $newName;
