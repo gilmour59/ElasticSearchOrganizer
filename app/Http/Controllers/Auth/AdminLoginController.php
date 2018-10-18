@@ -14,7 +14,7 @@ class AdminLoginController extends Controller
     }
 
     public function showLoginForm(){
-        Auth::guard('web')->logout();
+        //Auth::guard('web')->logout();
         return view('auth.admin-login');
     }
 

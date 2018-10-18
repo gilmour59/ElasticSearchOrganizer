@@ -19,17 +19,20 @@ Route::prefix('admin')->group(function(){
 
 Route::get('/division', 'PostsController@division')->name('division');
 
-Route::get('/view_files', 'ViewForSavingController@deleteViewFile')->middleware('auth:admin');
-Route::post('/view_files', 'ViewForSavingController@viewFiles')->name('view_files')->middleware('auth:admin');
+Route::get('/view_files', 'ViewForSavingController@deleteViewFile')->middleware('auth');
+Route::post('/view_files', 'ViewForSavingController@viewFiles')->name('view_files')->middleware('auth');
 
-Route::get('/', 'PostsController@index')->name('index')->middleware('auth:web,admin');
-Route::post('/store', 'PostsController@store')->name('store')->middleware('auth:admin');
-Route::get('/get/{id}', 'PostsController@edit')->name('edit')->middleware('auth:admin');
-Route::put('/update/{id}', 'PostsController@update')->name('update')->middleware('auth:admin');
-Route::delete('destroy/{id}', 'PostsController@destroy')->name('destroy')->middleware('auth:admin');
+Route::get('/', 'PostsController@index')->name('index')->middleware('auth');
+Route::post('/store', 'PostsController@store')->name('store')->middleware('auth');
+Route::get('/get/{id}', 'PostsController@edit')->name('edit')->middleware('auth');
+Route::put('/update/{id}', 'PostsController@update')->name('update')->middleware('auth');
+Route::delete('destroy/{id}', 'PostsController@destroy')->name('destroy')->middleware('auth');
 
-Route::get('/view/{id}', 'PostsController@view')->name('view')->middleware('auth:admin,web');
-Route::get('/download/{id}', 'PostsController@download')->name('download')->middleware('auth:admin,web');
+Route::get('/view/{id}', 'PostsController@view')->name('view')->middleware('auth');
+Route::get('/download/{id}', 'PostsController@download')->name('download')->middleware('auth');
 
 Auth::routes();
-Route::get('/home', 'HomeController@index')->name('home');
+
+Route::resource('users', 'UserController');
+Route::resource('roles', 'RoleController');
+Route::resource('permissions', 'PermissionController');

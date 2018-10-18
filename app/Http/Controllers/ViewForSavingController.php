@@ -15,7 +15,7 @@ class ViewForSavingController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:web,admin'); //$this->middleware('auth');
+        $this->middleware(['auth:admin,web', 'clearance']); //$this->middleware('auth');
     }
 
     public function viewFiles(Request $request){

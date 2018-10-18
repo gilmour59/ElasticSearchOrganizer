@@ -125,10 +125,10 @@
                                     @if($row['isDuplicate']) <!--Check if Dupe-->
                                     <td class="align-middle"><span style="color:red;">(File with the Same Name Found)</span> <br> <input class="changeFileName form-control" type="text" name="saveFileName{{ $key }}" id="saveFileName{{ $key }}" value="<?php echo old('saveFileName' . $key) ? old('saveFileName' . $key) : $row['file_name'] ?>"></td>
                                     @else
-                                    <td class="align-middle"><input class="changeFileName form-control" type="text" name="saveFileName{{ $key }}" id="saveFileName{{ $key }}" value="<?php echo old('saveFileName' . $key) ? old('saveFileName' . $key) : $row['file_name'] ?>"></td>
+                                    <td class="align-middle"><input class="changeFileName form-control" type="text" name="saveFileName{{ $key }}" id="saveFileName{{ $key }}" value="<?php old('saveFileName' . $key) ? echo old('saveFileName' . $key) : $row['file_name'] ?>"></td>
                                     @endif
                                     <td class="align-middle">
-                                        <input class="changeDate form-control" type="date" name="saveDate{{ $key }}" id="saveDate{{ $key }}" value="<?php echo old('saveDate' . $key) ? old('saveDate' . $key) : $row['date'] ?>">
+                                        <input class="changeDate form-control" type="date" name="saveDate{{ $key }}" id="saveDate{{ $key }}" value="<?php old('saveDate' . $key) ? echo old('saveDate' . $key) : $row['date'] ?>">
                                     </td>
                                     <td style="text-align:left">{{ str_limit($row['content'], 100) }}</td>
                                     <td class="align-middle">

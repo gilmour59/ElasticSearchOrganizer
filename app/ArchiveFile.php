@@ -9,6 +9,8 @@ class ArchiveFile extends Model
 {
     use Searchable;
 
+    protected $fillable = ['date', 'content', 'file_name'];
+
     protected $indexConfigurator = ArchiveFileIndexConfigurator::class;
 
     public function division(){
