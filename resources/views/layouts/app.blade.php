@@ -94,6 +94,21 @@
 
             <main class="py-4">
 
+                @if (count($errors) > 0)
+                    @foreach ($errors->all() as $error) <!--all() because the object has arrays as values-->
+                        <div id="addErrorMsg" class="alert alert-danger">
+                            {{$error}} <!-- Errors from validations (not sessions) -->
+                        </div>
+                    @endforeach
+                    <script>
+                        setTimeout(function() {
+                            $("#addErrorMsg").fadeTo(200, 0).slideUp(200, function(){
+                                $(this).remove(); 
+                            });
+                        }, 2000);
+                    </script>
+                @endif
+
                 @if (session('success'))
                     <div id='successMsg' class='alert alert-success'>
                         {{session('success')}}

@@ -9,14 +9,14 @@
         <form action="{{ route('permissions.store') }}" method="post">
             @csrf
             <div class="form-group">
-                <label class="control-label" for="addPermissionName">Name: </label>
-                <input class="form-control" type="text" name="addPermissionName" id="addPermissionName" value="{{ old('addPermissionName') }}" autofocus>
+                <label class="control-label" for="name">Name: </label>
+                <input class="form-control" type="text" name="name" id="name" value="{{ old('name') }}" autofocus>
             </div>
             @if(!$roles->isEmpty())
-            <h4>Assign Permission to Roles</h4>
-            <div class="form-group">
+            <label><b>Select Role: </b></label>
+            <div class="form-check">
                 @foreach($roles as $role)
-                <input class="form-check-input" type="check" value="{{ $role->id }}" name="addPermissionRole[]">
+                <input class="form-check-input" type="checkbox" value="{{ $role->id }}" name="role[]">
                     <label class="form-check-label">
                         {{$role->name}} 
                     </label> 
@@ -24,7 +24,8 @@
                 @endforeach
             </div>
             @endif
-            <input type="submit" class="btn btn-primary" name="submit" value="Submit"> 
+            <br>
+            <input type="submit" class="btn btn-primary float-right" value="Submit"> 
         </form>
     </div>
 </div>

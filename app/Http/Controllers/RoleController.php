@@ -18,31 +18,28 @@ class RoleController extends Controller
 
     public function index() {
         $roles = Role::all();//Get all roles
-
         return view('roles.index')->with('roles', $roles);
     }
 
     public function create() {
         $permissions = Permission::all();//Get all permissions
-
         return view('roles.create', ['permissions'=>$permissions]);
     }
 
     public function store(Request $request) {
         //Validate name and permissions field
         $this->validate($request, [
-            'addRoleName'=>'required|unique:roles|max:10',
-            'addRolePermission' =>'required',
+            'name'=>'required|unique:roles,name|max:40',
+            'permissions' =>'required',
             ]
         );
 
-        $name = $request['addRoleName'];
+        $name = $request['name'];
         $role = new Role();
         $role->name = $name;
-
-        $permissions = $request['addRolePermission'];
-
+        $permissions = $request['permissions'];
         $role->save();
+
         //Looping thru selected permissions
         foreach ($permissions as $permission) {
             $p = Permission::where('id', '=', $permission)->firstOrFail(); 
@@ -50,9 +47,8 @@ class RoleController extends Controller
             $role = Role::where('name', '=', $name)->first(); 
             $role->givePermissionTo($p);
         }
-
         return redirect()->route('roles.index')
-            ->with('success', 'Role'. $role->name.' added!'); 
+            ->with('success', 'Role: '. $role->name.' added!'); 
     }
 
     public function show($id) {
@@ -62,7 +58,6 @@ class RoleController extends Controller
     public function edit($id) {
         $role = Role::findOrFail($id);
         $permissions = Permission::all();
-
         return view('roles.edit', compact('role', 'permissions'));
     }
     
@@ -73,14 +68,13 @@ class RoleController extends Controller
         
         //Validate name and permission fields
         $this->validate($request, [
-            'name'=>'required|max:10|unique:roles,name,'.$id,
+            'name'=>'required|max:40|unique:roles,name,'.$id, //PROBLEM HERE!
             'permissions' =>'required',
         ]);
 
         $input = $request->except(['permissions']);
         $permissions = $request['permissions'];
         $role->fill($input)->save();
-
         $p_all = Permission::all();//Get all permissions
 
         foreach ($p_all as $p) {
@@ -93,7 +87,7 @@ class RoleController extends Controller
         }
 
         return redirect()->route('roles.index')
-            ->with('success', 'Role'. $role->name.' updated!');
+            ->with('success', 'Role: '. $role->name.' updated!');
     }
 
     public function destroy($id)
@@ -103,6 +97,5 @@ class RoleController extends Controller
 
         return redirect()->route('roles.index')
             ->with('success', 'Role deleted!');
-
     }
 }

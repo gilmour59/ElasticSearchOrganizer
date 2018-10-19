@@ -6,14 +6,14 @@
         Edit Permission: {{$permission->name}}
     </div>
     <div class="card-body">    
-        <form action="{{ route('permissions.update') }}" method="post">
+        <form action="{{ route('permissions.update', $permission->id) }}" method="post">
             @csrf
             <div class="form-group">
-                <label class="control-label" for="editPermissionName">Name: </label>
-                <input class="form-control" type="text" name="editPermissionName" id="editPermissionName" value="{{ $permission->name }}" autofocus>
+                <label class="control-label" for="name">Name: </label>
+                <input class="form-control" type="text" name="name" id="name" value="{{ $permission->name }}" autofocus>
             </div>
-
-            <input type="submit" class="btn btn-primary" name="submit" value="Submit"> 
+            <input type="hidden" name="_method" value="PUT">
+            <input type="submit" class="btn btn-primary" value="Submit"> 
         </form>
     </div>
 </div>

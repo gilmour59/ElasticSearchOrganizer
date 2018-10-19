@@ -6,25 +6,24 @@
         Add Roles
     </div>
     <div class="card-body">    
-        <form action="{{ route('permissions.store') }}" method="post">
+        <form action="{{ route('roles.store') }}" method="post">
             @csrf
             <div class="form-group">
-                <label class="control-label" for="addRoleName">Name: </label>
-                <input class="form-control" type="text" name="addRoleName" id="addRoleName" value="{{ old('addRoleName') }}" autofocus>
+                <label class="control-label" for="name">Name: </label>
+                <input class="form-control" type="text" name="name" id="name" value="{{ old('name') }}" autofocus>
             </div>
-
-            <h4>Assign Permissions </h4>
-            <div class="form-group">
+            <label><b>Select Role: </b></label>
+            <div class="form-check">
                 @foreach($permissions as $permission)
-                <input class="form-check-input" type="check" value="{{ $permission->id }}" name="addRolePermission[]">
+                <input class="form-check-input" type="checkbox" value="{{ $permission->id }}" name="permissions[]">
                     <label class="form-check-label">
                         {{$permission->name}} 
                     </label> 
                     <br>
                 @endforeach
             </div>
-            
-            <input type="submit" class="btn btn-primary" name="submit" value="Submit"> 
+            <br>
+            <input type="submit" class="btn btn-primary float-right" value="Submit"> 
         </form>
     </div>
 </div>

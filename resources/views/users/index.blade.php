@@ -14,7 +14,7 @@
         User Administration
     </div>
     <div class="card-body">    
-        <a href="{{ route('users.create') }}" class="btn btn-success">Add User</a>
+        <a href="{{ route('users.create') }}" class="btn btn-success mb-2">Add User</a>
         <div class="row">
             <div class="table-responsive" style="font-size:14px">
                 <table class="table table-striped table-bordered text-center">
@@ -23,7 +23,7 @@
                             <th>Name:</th>
                             <th>Email:</th>
                             <th>Date/Time Added:</th>
-                            <th>User Roles</th>
+                            <th>User Role:</th>
                             <th></th>
                             <th></th>
                         </tr>

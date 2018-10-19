@@ -9,32 +9,33 @@
         <form action="{{ route('users.store') }}" method="post">
             @csrf
             <div class="form-group">
-                <label class="control-label" for="addUserName">Name: </label>
-                <input class="form-control" type="text" name="addUserName" id="addUserName" value="{{ old('addUserName') }}" autofocus>
+                <label class="control-label" for="name">Name: </label>
+                <input class="form-control" type="text" name="name" id="name" value="{{ old('name') }}" autofocus>
             </div>
             <div class="form-group">
-                <label class="control-label" for="addUserEmail">Email: </label>
-                <input class="form-control" type="email" name="addUserEmail" id="addUserEmail" value="{{ old('addUserEmail') }}">
+                <label class="control-label" for="email">Email: </label>
+                <input class="form-control" type="email" name="email" id="email" value="{{ old('email') }}">
             </div>
             <div class="form-group">
+                <label class="control-label" for="password">Password: </label>
+                <input class="form-control" type="password" name="password" id="password">
+            </div>
+            <div class="form-group">
+                <label class="control-label" for="password_confirmation">Confirm Password: </label>
+                <input class="form-control" type="password" name="password_confirmation" id="password_confirmation">
+            </div>
+            <label><b>Select Role: </b></label>
+            <div class="form-check">
                 @foreach($roles as $role)
-                <input class="form-check-input" type="radio" value="{{ $role->id }}" name="addUserRole[]">
+                <input class="form-check-input" type="radio" value="{{ $role->id }}" name="role[]">
                     <label class="form-check-label">
                         {{$role->name}} 
                     </label> 
                     <br>
                 @endforeach
+                <br>
             </div>
-            <div class="form-group">
-                <label class="control-label" for="addUserPassword">Password: </label>
-                <input class="form-control" type="password" name="addUserPassword" id="addUserPassword">
-            </div>
-            <div class="form-group">
-                <label class="control-label" for="addUserPassword_confirmation">Password: </label>
-                <input class="form-control" type="password" name="addUserPassword_confirmation" id="addUserPassword_confirmation">
-            </div>
-
-            <input type="submit" class="btn btn-primary" name="submit" value="Submit"> 
+            <input type="submit" class="btn btn-primary float-right" value="Submit"> 
         </form>
     </div>
 </div>

@@ -6,26 +6,29 @@
         Edit User: {{$user->name}}
     </div>
     <div class="card-body">    
-        <form action="{{ route('users.update') }}" method="post">
+        <form action="{{ route('users.update', $user->id) }}" method="post">
             @csrf
             <div class="form-group">
-                <label class="control-label" for="editUserName">Name: </label>
-                <input class="form-control" type="text" name="editUserName" id="editUserName" value="{{ $user->name }}" autofocus>
+                <label class="control-label" for="name">Name: </label>
+                <input class="form-control" type="text" name="name" id="name" value="{{ $user->name }}" autofocus>
             </div>
             <div class="form-group">
-                <label class="control-label" for="editUserEmail">Email: </label>
-                <input class="form-control" type="email" name="editUserEmail" id="editUserEmail" value="{{ $user->email }}">
+                <label class="control-label" for="email">Email: </label>
+                <input class="form-control" type="email" name="email" id="email" value="{{ $user->email }}">
             </div>
-            <div class="form-group">
+            <label><b>Role: </b></label>
+            <div class="form-check">
                 @foreach($roles as $role)
-                <input class="form-check-input" type="radio" value="{{ $role->id }}" name="editUserRole[]" <?php if(($user->roles) == ($role->id)){ echo checked } ?>>
+                <input class="form-check-input" type="radio" value="{{ $role->id }}" name="role[]" <?php if($user->roles[0]->id == $role->id){ echo "checked"; } ?>>
                     <label class="form-check-label">
                         {{$role->name}} 
                     </label> 
                     <br>
                 @endforeach
             </div>
-            <input type="submit" class="btn btn-primary" name="submit" value="Submit"> 
+            <br>
+            <input type="hidden" name="_method" value="PUT">
+            <input type="submit" class="btn btn-primary" value="Submit"> 
         </form>
     </div>
 </div>

@@ -16,30 +16,26 @@ class PermissionController extends Controller
 
     public function index() {
         $permissions = Permission::all(); //Get all permissions
-
         return view('permissions.index')->with('permissions', $permissions);
     }
 
     public function create() {
         $roles = Role::get(); //Get all roles
-
         return view('permissions.create')->with('roles', $roles);
     }
 
     public function store(Request $request) {
         $this->validate($request, [
-            'addPermissionName'=>'required|max:40',
+            'name'=>'required|max:40',
         ]);
 
-        $name = $request['addPermissionName'];
+        $name = $request['name'];
         $permission = new Permission();
         $permission->name = $name;
-
-        $roles = $request['addPermissionRole'];
-
+        $roles = $request['role'];
         $permission->save();
 
-        if (!empty($request['addPermissionRole'])) { //If one or more role is selected
+        if (!empty($request['role'])) { //If one or more role is selected
             foreach ($roles as $role) {
                 $r = Role::where('id', '=', $role)->firstOrFail(); //Match input role to db record
 
@@ -47,9 +43,8 @@ class PermissionController extends Controller
                 $r->givePermissionTo($permission);
             }
         }
-
         return redirect()->route('permissions.index')
-            ->with('success', 'Permission'. $permission->name.' added!');
+            ->with('success', 'Permission: '. $permission->name.' added!');
     }
 
     public function show($id) {
@@ -58,20 +53,19 @@ class PermissionController extends Controller
 
     public function edit($id) {
         $permission = Permission::findOrFail($id);
-
         return view('permissions.edit', compact('permission'));
     }
 
     public function update(Request $request, $id) {
         $permission = Permission::findOrFail($id);
         $this->validate($request, [
-            'editPermissionRole'=>'required|max:40',
+            'name'=>'required|max:40',
         ]);
         $input = $request->all();
         $permission->fill($input)->save();
 
         return redirect()->route('permissions.index')
-            ->with('success', 'Permission'. $permission->name.' updated!');
+            ->with('success', 'Permission: '. $permission->name.' updated!');
     }
 
     public function destroy($id) {

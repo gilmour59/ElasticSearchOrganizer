@@ -9,7 +9,7 @@
         "babenkoivan/scout-elasticsearch-driver": "^3.8",
         "elasticsearch/elasticsearch": "^6.0",
         "fideloper/proxy": "^4.0",
-        "laravel/framework": "5.6.*",
+        "laravel/framework": "5.7.*",
         "laravel/scout": "4.0.*",
         "laravel/tinker": "^1.0",
         "smalot/pdfparser": "*",

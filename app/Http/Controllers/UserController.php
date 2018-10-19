@@ -49,15 +49,15 @@ class UserController extends Controller
     {
         //Validate name, email and password fields
         $this->validate($request, [
-            'addUserName'=>'required|max:120',
-            'addUserEmail'=>'required|email|unique:users',
-            'addUserPassword'=>'required|min:6|confirmed'
+            'name'=>'required|max:120',
+            'email'=>'required|email|unique:users',
+            'password'=>'required|min:6|confirmed'
         ]);
 
-        $user = User::create($request->only('addUserEmail', 'addUserName', 'addUserPassword')); //Retrieving only the email and password data
+        $user = User::create($request->only('email', 'name', 'password')); //Retrieving only the email and password data
 
         //Retrieving the roles field
-        $roles = $request['addUserRole']; 
+        $roles = $request['role']; 
 
         //Checking if a role was selected
         if (isset($roles)) {
@@ -111,12 +111,12 @@ class UserController extends Controller
 
         //Validate name, email and password fields    
         $this->validate($request, [
-            'editUserName'=>'required|max:120',
-            'editUserEmail'=>'required|email|unique:users,email,'.$id,
+            'name'=>'required|max:120',
+            'email'=>'required|email|unique:users,email,'.$id,
         ]);
         
-        $input = $request->only(['editUserName', 'editUserEmail']); //Retreive the name, and email
-        $roles = $request['editUserRole']; //Retreive all roles
+        $input = $request->only(['name', 'email']); //Retreive the name, and email
+        $roles = $request['role']; //Retreive all roles
         $user->fill($input)->save();
 
         if (isset($roles)) {        

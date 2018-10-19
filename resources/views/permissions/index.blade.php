@@ -14,7 +14,7 @@
         Permissions
     </div>
     <div class="card-body">    
-        <a href="{{ route('permissions.create') }}" class="btn btn-success">Add Permissions</a>
+        <a href="{{ route('permissions.create') }}" class="btn btn-success mb-2">Add Permissions</a>
         <div class="row">
             <div class="table-responsive" style="font-size:14px">
                 <table class="table table-striped table-bordered text-center">
@@ -30,10 +30,10 @@
                         <tr>
                             <td>{{ $permission->name }}</td>
                             <td>
-                                <a href="{{ route('permissions.edit', $user->id) }}" class="btn btn-info" style="margin-right: 3px;">Edit</a>
+                                <a href="{{ route('permissions.edit', $permission->id) }}" class="btn btn-info" style="margin-right: 3px;">Edit</a>
                             </td>
                             <td>
-                                <form action="{{ route('permissions.destroy', $user->id) }}" method="post">
+                                <form action="{{ route('permissions.destroy', $permission->id) }}" method="post">
                                     @csrf
                                     <input name="_method" type="hidden" value="DELETE">
                                     <input type="submit" class="btn btn-danger" value="Delete">
