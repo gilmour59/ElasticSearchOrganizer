@@ -19,7 +19,7 @@
             <label><b>Role: </b></label>
             <div class="form-check">
                 @foreach($roles as $role)
-                <input class="form-check-input" type="radio" value="{{ $role->id }}" name="role[]" <?php if($user->roles[0]->id == $role->id){ echo "checked"; } ?>>
+                <input class="form-check-input" type="radio" value="{{ $role->id }}" name="role[]" <?php if(isset($user->roles[0]->id)){if($user->roles[0]->id == $role->id){ echo "checked"; }} ?>>
                     <label class="form-check-label">
                         {{$role->name}} 
                     </label> 

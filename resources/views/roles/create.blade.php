@@ -12,7 +12,7 @@
                 <label class="control-label" for="name">Name: </label>
                 <input class="form-control" type="text" name="name" id="name" value="{{ old('name') }}" autofocus>
             </div>
-            <label><b>Select Role: </b></label>
+            <label><b>Select Permissions: </b></label>
             <div class="form-check">
                 @foreach($permissions as $permission)
                 <input class="form-check-input" type="checkbox" value="{{ $permission->id }}" name="permissions[]">

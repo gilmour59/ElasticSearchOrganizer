@@ -1,14 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-
-{{-- send this to nav after everything --}}
-<h1>
-    <i class="fa fa-users"></i>
-    <a href="{{ route('roles.index') }}" class="btn btn-default pull-right">Roles</a>
-    <a href="{{ route('users.index') }}" class="btn btn-default pull-right">Users</a>
-</h1>  
-
 <div class="card mx-auto" style="width: 1150px;">
     <div class="card-header font-weight-bold">
         Permissions

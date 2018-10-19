@@ -62,6 +62,11 @@
                                     </a> 
                                     
                                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+
+                                        @role('Super Admin')
+                                        <a class="dropdown-item" href="{{ route('users.index') }}">Add Users</a>
+                                        <a class="dropdown-item" href="{{ route('roles.index') }}">Set Roles</a>
+                                        @endrole
                                         <a class="dropdown-item" href="{{ route('logout') }}"
                                         onclick="event.preventDefault();
                                                         document.getElementById('logout-form').submit();">
