@@ -30,7 +30,25 @@ class ClearanceMiddleware
             }
         }
 
+        if ($request->is('view_files'))//If user is creating a post
+        {
+            if (!Auth::user()->hasPermissionTo('create post')){
+                abort('401');
+            }else{
+                return $next($request);
+            }
+        }
+
         if ($request->is('update/*')) //If user is editing a post
+        {
+            if (!Auth::user()->hasPermissionTo('edit post')){
+                abort('401');
+            }else{
+                return $next($request);
+            }
+        }
+
+        if ($request->is('get/*')) //If user is editing a post
         {
             if (!Auth::user()->hasPermissionTo('edit post')){
                 abort('401');
