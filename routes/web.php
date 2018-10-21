@@ -29,3 +29,4 @@ Auth::routes();
 Route::resource('users', 'UserController');
 Route::resource('roles', 'RoleController');
 Route::resource('permissions', 'PermissionController');
+Route::resource('divisions', 'DivisionController');
