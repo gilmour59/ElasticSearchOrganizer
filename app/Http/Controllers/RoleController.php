@@ -12,8 +12,8 @@ use Spatie\Permission\Models\Permission;
 class RoleController extends Controller
 {
     public function __construct() {
-        //isAdmin middleware lets only users with a //specific permission permission to access these resources
-        $this->middleware(['auth', 'isAdmin']);
+        //isAdmin middleware lets only users with a specific permission permission to access these resources
+        $this->middleware('isAdmin');
     }
 
     public function index() {

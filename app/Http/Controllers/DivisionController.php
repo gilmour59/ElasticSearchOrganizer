@@ -9,7 +9,7 @@ class DivisionController extends Controller
 {
     public function __construct() {
         //isAdmin middleware lets only users with a specific permission permission to access these resources
-        $this->middleware(['auth', 'isAdmin']); 
+        $this->middleware(['auth', 'isAdmin']);
     }
 
     public function index() {

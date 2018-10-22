@@ -65,6 +65,15 @@ class ClearanceMiddleware
                 return $next($request);
             }
         }
+
+        if ($request->is('/')) //If user is editing a post
+        {
+            if (!Auth::user()->hasPermissionTo('view post')){
+                abort('401');
+            }else{
+                return $next($request);
+            }
+        }
         
         return $next($request);
     }
