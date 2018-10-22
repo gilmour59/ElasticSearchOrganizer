@@ -18,6 +18,7 @@
                             <th>User Role:</th>
                             <th></th>
                             <th></th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -29,7 +30,10 @@
                             {{-- Retrieve array of roles associated to a user and convert to string --}}
                             <td>{{ $user->roles()->pluck('name')->implode(' ') }}</td>
                             <td>
-                                <a href="{{ route('users.edit', $user->id) }}" class="btn btn-info" style="margin-right: 3px;">Edit</a>
+                                <a href="{{ route('users.edit', $user->id) }}" class="btn btn-primary" style="margin-right: 3px;">Edit</a>
+                            </td>
+                            <td>
+                                <a href="{{ route('users.password', $user->id) }}" class="btn btn-info" style="margin-right: 3px;">Password</a>
                             </td>
                             <td>
                                 <form action="{{ route('users.destroy', $user->id) }}" method="post">

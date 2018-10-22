@@ -149,4 +149,27 @@ class UserController extends Controller
         return redirect()->route('users.index')
             ->with('success', 'User successfully deleted.');
     }
+
+    public function editPassword($id)
+    {
+        $user = User::findOrFail($id);
+
+        return view('users.password', compact('user'));
+    }
+
+    public function updatePassword(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+
+        //Validate password fields    
+        $this->validate($request, [
+            'password'=>'required|min:6|confirmed'
+        ]);
+
+        $user->password = Hash::make($request['password']);
+        $user->save();
+
+        return redirect()->route('users.index')
+            ->with('success', 'User Successfully Changed Password.');
+    }
 }

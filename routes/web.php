@@ -30,3 +30,6 @@ Route::resource('users', 'UserController');
 Route::resource('roles', 'RoleController');
 Route::resource('permissions', 'PermissionController');
 Route::resource('divisions', 'DivisionController');
+
+Route::get('/users/password/{id}', 'UserController@editPassword');
+Route::put('/users/password/{id}', 'UserController@updatePassword')->name('users.password');
