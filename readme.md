@@ -48,7 +48,7 @@ https://github.com/babenkoivan/scout-elasticsearch-driver
 1. goto /register 
 2. register an account
 3. goto /permissions
-4. add "administer roles and permissions"
+4. add "administer roles and permissions" , "view post", "create post", "edit post", "delete post"
 5. goto /roles
 6. add Super Admin and set permission
 7. Create desired users
