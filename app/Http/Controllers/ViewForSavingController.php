@@ -34,10 +34,13 @@ class ViewForSavingController extends Controller
         }
         $date = $request->input('addDate');
 
+        $fileSys = new Filesystem();
+
+        if(!is_dir(storage_path('app/public/temp/'))){
+            $fileSys->makeDirectory(storage_path('app/public/temp/'));
+        }
+
         if($request->hasFile('addFileUpload')){
-            
-            //$cleaner = new Filesystem();
-            //$cleaner->cleanDirectory(storage_path('app/public/temp'));
 
             $path = storage_path('app/public/temp/');
             if ($handle = opendir($path)) {
