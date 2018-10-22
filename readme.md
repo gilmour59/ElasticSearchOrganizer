@@ -44,6 +44,15 @@ https://github.com/babenkoivan/scout-elasticsearch-driver
 
 6. php artisan scout:import "App\ArchiveFile"
 
+#Getting Started
+1. goto /register 
+2. register an account
+3. goto /permissions
+4. add "administer roles and permissions"
+5. goto /roles
+6. add Super Admin and set permission
+7. Create desired users
+
 
 #Super Admin
 - has access to all 

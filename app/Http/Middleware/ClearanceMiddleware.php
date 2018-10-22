@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Support\Facades\Auth;
+use App\User;
 
 class ClearanceMiddleware
 {
@@ -16,6 +17,11 @@ class ClearanceMiddleware
      */
     public function handle($request, Closure $next)
     {
+        $user = User::count();
+        if(($user === 1)){ //if the only one user is registered in the DB (considered as Super Admin)
+            return $next($request);
+        }
+
         if (Auth::user()->hasPermissionTo('administer roles and permissions')) //If user has this //permission
         {
             return $next($request);
