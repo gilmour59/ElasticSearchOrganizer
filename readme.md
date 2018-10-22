@@ -10,6 +10,7 @@
 2. cp .env.example .env
 3. php artisan key:generate
 4. php artisan storage:link
+5. Apache posts limitations change
 
 #env
 - APP_URL=http://organizer.test
