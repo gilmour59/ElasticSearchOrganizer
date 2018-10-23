@@ -45,25 +45,4 @@ https://github.com/babenkoivan/scout-elasticsearch-driver
 
 6. php artisan scout:import "App\ArchiveFile"
 
-#Getting Started
-1. goto /register 
-2. register an account
-3. goto /permissions
-4. add "administer roles and permissions" , "view post", "create post", "edit post", "delete post"
-5. goto /roles
-6. add Super Admin and set permission
-7. Create desired users
-
-
-#Super Admin
-- has access to all 
-- right to create user 
-- right to delete user
-
-TODO: Create interface for creating and deleting users
-
-#Admin
-- can CRUD records
-
-#Normal User 
--can only view files
+7. php artisan db:seed

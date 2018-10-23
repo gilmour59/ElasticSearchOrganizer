@@ -121,15 +121,14 @@ class UserController extends Controller
         ]);
         
         $input = $request->only(['name', 'email']); //Retreive the name, and email
-        $roles = $request['role']; //Retreive all roles
         $user->fill($input)->save();
 
-        if (isset($roles)) {        
-            $user->roles()->sync($roles);  //If one or more role is selected associate user to roles          
-        }        
-        //else {
-            //$user->roles()->detach(); //If no role is selected remove exisiting role associated to a user
-        //}
+        if($user->id !== 1){
+            $roles = $request['role']; //Retreive all roles
+            if (isset($roles)) {        
+                $user->roles()->sync($roles);  //If one or more role is selected associate user to roles          
+            }        
+        }
         return redirect()->route('users.index')
             ->with('success', 'User successfully edited.');
     }
@@ -144,6 +143,10 @@ class UserController extends Controller
     {
         //Find a user with a given id and delete
         $user = User::findOrFail($id); 
+        if ($user->id === 1) {
+            return redirect()->route('users.index')
+            ->with('error', 'Cannot delete this User!');
+        }
         $user->delete();
 
         return redirect()->route('users.index')

@@ -36,11 +36,13 @@
                                 <a href="{{ route('users.password', $user->id) }}" class="btn btn-info" style="margin-right: 3px;">Password</a>
                             </td>
                             <td>
+                                @if($user->id !== 1)
                                 <form action="{{ route('users.destroy', $user->id) }}" method="post">
                                     @csrf
                                     <input name="_method" type="hidden" value="DELETE">
                                     <input type="submit" onclick="return confirm('Are you sure you want to Permanently DELETE this?');" class="btn btn-danger" value="Delete">
                                 </form>
+                                @endif
                             </td>
                         </tr>
                         @endforeach

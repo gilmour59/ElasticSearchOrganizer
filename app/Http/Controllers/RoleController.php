@@ -65,6 +65,11 @@ class RoleController extends Controller
 
         //Get role with the given id
         $role = Role::findOrFail($id);
+
+        if ($role->id === 1) {
+            return redirect()->route('roles.index')
+            ->with('error', 'Cannot edit this User!');
+        }
         
         //Validate name and permission fields
         $this->validate($request, [
@@ -93,6 +98,10 @@ class RoleController extends Controller
     public function destroy($id)
     {
         $role = Role::findOrFail($id);
+        if ($role->id === 1) {
+            return redirect()->route('roles.index')
+            ->with('error', 'Cannot delete this Role!');
+        }
         $role->delete();
 
         return redirect()->route('roles.index')

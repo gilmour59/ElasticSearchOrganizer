@@ -16,6 +16,7 @@
                 <label class="control-label" for="email">Email: </label>
                 <input class="form-control" type="email" name="email" id="email" value="{{ $user->email }}">
             </div>
+            @if($user->id !== 1)
             <label><b>Role: </b></label>
             <div class="form-check">
                 @foreach($roles as $role)
@@ -27,6 +28,7 @@
                 @endforeach
             </div>
             <br>
+            @endif
             <input type="hidden" name="_method" value="PUT">
             <input type="submit" onclick="return confirm('Are you sure you want to do that?');" class="btn btn-primary" value="Submit"> 
         </form>

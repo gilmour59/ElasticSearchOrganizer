@@ -25,14 +25,18 @@
                             {{-- Retrieve array of permissions associated to a role and convert to string --}}
                             <td>{{ str_replace(array('[',']','"',','),'|', $role->permissions()->pluck('name')) }}</td>
                             <td>
+                                @if($role->id !== 1)
                                 <a href="{{ route('roles.edit', $role->id) }}" class="btn btn-info" style="margin-right: 3px;">Edit</a>
+                                @endif
                             </td>
                             <td>
+                                @if($role->id !== 1)
                                 <form action="{{ route('roles.destroy', $role->id) }}" method="post">
                                     @csrf
                                     <input name="_method" type="hidden" value="DELETE">
                                     <input type="submit" onclick="return confirm('Are you sure you want to Permanently DELETE this?');" class="btn btn-danger" value="Delete">
                                 </form>
+                                @endif
                             </td>
                         </tr>
                         @endforeach

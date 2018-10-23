@@ -17,8 +17,7 @@ class ClearanceMiddleware
      */
     public function handle($request, Closure $next)
     {
-        $user = User::count();
-        if(($user === 1)){ //if the only one user is registered in the DB (considered as Super Admin)
+        if(Auth::user()->id === 1){
             return $next($request);
         }
 
@@ -80,7 +79,7 @@ class ClearanceMiddleware
                 return $next($request);
             }
         }
-        
+    
         return $next($request);
     }
 }
