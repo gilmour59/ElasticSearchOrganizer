@@ -35,7 +35,7 @@
                 @endforeach
                 <br>
             </div>
-            <input type="submit" class="btn btn-primary float-right" value="Submit"> 
+            <input type="submit" onclick="return confirm('Are you sure you want to do that?');" class="btn btn-primary float-right" value="Submit"> 
         </form>
     </div>
 </div>

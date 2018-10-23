@@ -39,7 +39,7 @@
                                 <form action="{{ route('users.destroy', $user->id) }}" method="post">
                                     @csrf
                                     <input name="_method" type="hidden" value="DELETE">
-                                    <input type="submit" class="btn btn-danger" value="Delete">
+                                    <input type="submit" onclick="return confirm('Are you sure you want to Permanently DELETE this?');" class="btn btn-danger" value="Delete">
                                 </form>
                             </td>
                         </tr>

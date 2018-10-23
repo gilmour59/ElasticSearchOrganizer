@@ -17,7 +17,7 @@
                 <input class="form-control" type="password" name="password_confirmation" id="password_confirmation">
             </div>
             <input type="hidden" name="_method" value="PUT">
-            <input type="submit" class="btn btn-primary" value="Submit"> 
+            <input type="submit" onclick="return confirm('Are you sure you want to do that?');" class="btn btn-primary" value="Submit"> 
         </form>
     </div>
 </div>
