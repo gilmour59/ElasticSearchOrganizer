@@ -76,7 +76,7 @@
             </div>
             <div class="offset-1 col-sm-1 pb-1 align-self-end" style="text-align:right;">
                 @if (!empty($passData))
-                <button id="submitBtn" type="submit" form="saveFileForm" class="btn btn-primary" value="Submit">Save</button>
+                <button id="submitBtn" onclick="return confirm('Are you sure you want to do this?');" type="submit" form="saveFileForm" class="btn btn-primary" value="Submit">Save</button>
                 @else
                 <a class="btn btn-primary" href="{{route('index')}}">Go Back</a>
                 @endif

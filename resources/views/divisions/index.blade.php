@@ -12,6 +12,7 @@
                 <table class="table table-striped table-bordered text-center">
                     <thead>
                         <tr>
+                            <th>ID: </th>
                             <th>Divisions: </th>
                             <th></th>
                             <th></th>
@@ -20,6 +21,7 @@
                     <tbody>
                         @foreach ($divisions as $division)
                         <tr>
+                            <td>{{ $division->id }}</td>
                             <td>{{ $division->div_name }}</td>
                             <td>
                                 <a href="{{ route('divisions.edit', $division->id) }}" class="btn btn-info" style="margin-right: 3px;">Edit</a>
@@ -28,7 +30,7 @@
                                 <form action="{{ route('divisions.destroy', $division->id) }}" method="post">
                                     @csrf
                                     <input name="_method" type="hidden" value="DELETE">
-                                    <input type="submit" class="btn btn-danger" value="Delete">
+                                    <input type="submit" onclick="return confirm('THIS CAN BREAK THE APP.\nMAKE SURE YOU KNOW WHAT YOU\'RE DOING! ');" class="btn btn-danger" value="Delete">
                                 </form>
                             </td>
                         </tr>
