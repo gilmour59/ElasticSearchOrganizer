@@ -51,9 +51,12 @@ class DivisionController extends Controller
             'div_name'=>'required|max:40|unique:divisions,div_name,'.$id,
         ]);
 
-        $name = $request['div_name'];
-        $division->div_name = $name;
+        $previousName = $division->div_name;
+        $newName = $request['div_name'];
+        $division->div_name = $newName;
         $division->save();
+        
+        rename(storage_path('app/public/') . $previousName, storage_path('app/public/') . $newName);
 
         return redirect()->route('divisions.index')
             ->with('success', 'Division: '. $division->div_name.' updated!');
