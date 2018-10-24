@@ -193,7 +193,7 @@ class PostsController extends Controller
         $archiveFiles = ArchiveFile::find($id);
 
         $FileSys = new FileSystem();
-        if($archiveFiles->date != $request->input('editDate')){
+        if($archiveFiles->date != $request->input('editDate')){ //done
             
             $division = Division::find($archiveFiles->division_id);
             
@@ -221,7 +221,7 @@ class PostsController extends Controller
             $archiveFiles->file = $newName;
         }
 
-        if($archiveFiles->file_name != $request->input('editFileName')){
+        if($archiveFiles->file_name != $request->input('editFileName')){ //done
 
             $division = Division::find($archiveFiles->division_id);
 
@@ -232,31 +232,39 @@ class PostsController extends Controller
 
             $year = date('Y', strtotime($archiveFiles->date));
 
-            $newName = $this->incrementFileName(storage_path('app/public/' . $division->div_name . '/' . $year . '/'),  $newFileName);
+            //$newName = $this->incrementFileName(storage_path('app/public/' . $division->div_name . '/' . $year . '/'),  $newFileName);
+            $newName = $this->incrementFileName(config('organizer.storage_path') . $division->div_name . '\\' . $year . '\\',  $newFileName);
 
-            Storage::move('public/' . $division->div_name . '/' . $year . '/' . $archiveFiles->file, 'public/' . $division->div_name . '/' . $year . '/' . $newName);
+            //Storage::move('public/' . $division->div_name . '/' . $year . '/' . $archiveFiles->file, 'public/' . $division->div_name . '/' . $year . '/' . $newName);
+            rename(config('organizer.storage_path') . $division->div_name . '\\' . $year . '\\' . $archiveFiles->file, config('organizer.storage_path') . $division->div_name . '\\' . $year . '\\' . $newName);
 
             $archiveFiles->file_name = $request->input('editFileName');
             $archiveFiles->file = $newName;
         }
 
-        if($archiveFiles->division_id != $request->input('editDivision')){
+        if($archiveFiles->division_id != $request->input('editDivision')){ //done
 
             $divisionOld = Division::find($archiveFiles->division_id);
             $divisionNew = Division::find($request->input('editDivision'));
 
-            $year = date('Y', strtotime($archiveFiles->date));
+            $year = date('Y', strtotime($archiveFiles->date));            
 
-            $newName = $this->incrementFileName(storage_path('app/public/' . $divisionNew->div_name . '/' . $year . '/'),  $archiveFiles->file);
+            if(!$FileSys->exists(config('organizer.storage_path') . $divisionNew->div_name . '\\' . $year . '\\')){
+                $FileSys->makeDirectory(config('organizer.storage_path') . $divisionNew->div_name . '\\' . $year . '\\', 0777, true);
+            }
 
-            Storage::move('public/' . $divisionOld->div_name . '/' . $year . '/' . $archiveFiles->file, 'public/' . $divisionNew->div_name . '/' . $year . '/' . $newName);
+            //$newName = $this->incrementFileName(storage_path('app/public/' . $divisionNew->div_name . '/' . $year . '/'),  $archiveFiles->file);
+            $newName = $this->incrementFileName(config('organizer.storage_path') . $divisionNew->div_name . '\\' . $year . '\\',  $archiveFiles->file);
 
+            //Storage::move('public/' . $divisionOld->div_name . '/' . $year . '/' . $archiveFiles->file, 'public/' . $divisionNew->div_name . '/' . $year . '/' . $newName);
+            $FileSys->move(config('organizer.storage_path') . $divisionOld->div_name . '\\' . $year . '\\' . $archiveFiles->file, config('organizer.storage_path') . $divisionNew->div_name . '\\' . $year . '\\' . $newName);
+            
             $archiveFiles->division_id = $request->input('editDivision');
             $archiveFiles->file = $newName;
         }
 
         //Handle File Upload
-        if ($request->hasFile('editFileUpload')) {
+        if ($request->hasFile('editFileUpload')) { //done?
 
             //get File Name
             //$fileNameWithExtension = $request->file('editFileUpload')->getClientOriginalName();
@@ -267,15 +275,20 @@ class PostsController extends Controller
             $year = date('Y', strtotime($archiveFiles->date));
 
             //Delete and Replace
-            Storage::delete('public/' . $division->div_name . '/' . $year . '/' . $archiveFiles->file);
-
-            $newName = $this->incrementFileName(storage_path('app/public/' . $division->div_name . '/' . $year . '/'),  $fileNameToStore);
+            //Storage::delete('public/' . $division->div_name . '/' . $year . '/' . $archiveFiles->file);
+            $FileSys->delete(config('organizer.storage_path') . $division->div_name . '\\' . $year . '\\' . $archiveFiles->file);
             
-            $path = $request->file('editFileUpload')->storeAs('public/' . $division->div_name . '/' . $year . '/', $newName);
+            //$newName = $this->incrementFileName(storage_path('app/public/' . $division->div_name . '/' . $year . '/'),  $fileNameToStore);
+            $newName = $this->incrementFileName(config('organizer.storage_path') . $division->div_name . '\\' . $year . '\\',  $fileNameToStore);
+
+            //$path = $request->file('editFileUpload')->storeAs('public/' . $division->div_name . '/' . $year . '/', $newName);
+            $path = $request->file('editFileUpload')->move(config('organizer.storage_path') . $division->div_name . '/' . $year . '/', $newName);
 
             //Parse pdf
             $parser = new Parser();
-            if($pdf = $parser->parseFile(storage_path('/app/') . $path)){
+
+            //change this
+            if($pdf = $parser->parseFile($path)){
                 //IF FAIL - 'content cannot be parsed'
                 $text = $pdf->getText();
                 $archiveFiles->content = $text; 
@@ -314,7 +327,9 @@ class PostsController extends Controller
 
         $year = date('Y', strtotime($archiveFiles->date));
 
-        Storage::delete('public/' . $division->div_name . '/' . $year . '/' . $archiveFiles->file);
+        $FileSys = new FileSystem();
+        //Storage::delete('public/' . $division->div_name . '/' . $year . '/' . $archiveFiles->file);
+        $FileSys->delete(config('organizer.storage_path') . $division->div_name . '\\' . $year . '\\' . $archiveFiles->file);
         
         $archiveFiles->delete();
     }
@@ -335,7 +350,7 @@ class PostsController extends Controller
 
         $year = date('Y', strtotime($archiveFiles->date));
 
-        return response()->file(storage_path('app/public/') . $division->div_name . '/' . $year . '/' . $archiveFiles->file);
+        return response()->file(config('organizer.storage_path') . $division->div_name . '/' . $year . '/' . $archiveFiles->file);
     }
 
     public function download($id)
@@ -345,6 +360,6 @@ class PostsController extends Controller
 
         $year = date('Y', strtotime($archiveFiles->date));
 
-        return response()->download(storage_path('app/public/') . $division->div_name . '/' . $year . '/' . $archiveFiles->file);
+        return response()->download(config('organizer.storage_path') . $division->div_name . '/' . $year . '/' . $archiveFiles->file);
     }
 }

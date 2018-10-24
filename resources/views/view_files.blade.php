@@ -268,9 +268,5 @@
                 $('#submitBtn').prop('disabled', true);
             }
         });
-
-        $('#submitBtn').click(function(){
-            $('.loading').show();
-        });
     </script>
 @endsection
