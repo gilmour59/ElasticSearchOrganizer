@@ -135,9 +135,16 @@ class PostsController extends Controller
                 $extension = explode(".", $value['file']);
                 $extension = end($extension);
 
-                $newName = $this->incrementFileName(storage_path('app/public/' . $division->div_name . '/' . $year . '/'),  ($request->input('saveFileName' . $key) . '.' . $extension));
+                if(!$FileSys->exists(config('organizer.storage_path') . $division->div_name . '\\' . $year . '\\')){
+                    $FileSys->makeDirectory(config('organizer.storage_path') . $division->div_name . '\\' . $year . '\\', 0777, true);
+                }
 
-                Storage::move('public/temp/' .  $value['file'], 'public/' . $division->div_name . '/' . $year . '/' . $newName);
+                //$newName = $this->incrementFileName(storage_path('app/public/' . $division->div_name . '/' . $year . '/'),  ($request->input('saveFileName' . $key) . '.' . $extension));
+                $newName = $this->incrementFileName(config('organizer.storage_path') . $division->div_name . '\\' . $year . '\\',  ($request->input('saveFileName' . $key) . '.' . $extension));
+
+                //Storage::move('public/temp/' .  $value['file'], 'public/' . $division->div_name . '/' . $year . '/' . $newName);
+                $FileSys->move(storage_path('app\public\\') . 'temp\\' . $value['file'], config('organizer.storage_path') . $division->div_name . '\\' . $year . '\\' . $newName);
+
                 $archiveFiles->file = $newName;
 
                 $archiveFiles->save(); 
@@ -185,6 +192,7 @@ class PostsController extends Controller
         //Find Data 
         $archiveFiles = ArchiveFile::find($id);
 
+        $FileSys = new FileSystem();
         if($archiveFiles->date != $request->input('editDate')){
             
             $division = Division::find($archiveFiles->division_id);
@@ -193,11 +201,21 @@ class PostsController extends Controller
             $dateNew = $request->input('editDate');
             
             $yearOld = date('Y', strtotime($dateOld));
-            $yearNew = date('Y', strtotime($dateNew));
+            $yearNew = date('Y', strtotime($dateNew));  
 
-            $newName = $this->incrementFileName(storage_path('app/public/' . $division->div_name . '/' . $yearNew . '/'),  $archiveFiles->file);
+            /* if(!$FileSys->exists(config('organizer.storage_path') . $division->div_name . '\\' . $yearOld . '\\')){
+                $FileSys->makeDirectory(config('organizer.storage_path') . $division->div_name . '\\' . $yearOld . '\\', 0777, true);
+            } */
 
-            Storage::move('public/' . $division->div_name . '/' . $yearOld . '/' . $archiveFiles->file, 'public/' . $division->div_name . '/' . $yearNew . '/' . $newName);
+            if(!$FileSys->exists(config('organizer.storage_path') . $division->div_name . '\\' . $yearNew . '\\')){
+                $FileSys->makeDirectory(config('organizer.storage_path') . $division->div_name . '\\' . $yearNew . '\\', 0777, true);
+            }
+
+            //$newName = $this->incrementFileName(storage_path('app/public/' . $division->div_name . '/' . $yearNew . '/'),  $archiveFiles->file);
+            $newName = $this->incrementFileName(config('organizer.storage_path') . $division->div_name . '\\' . $yearNew . '\\',  $archiveFiles->file);
+
+            //Storage::move('public/' . $division->div_name . '/' . $yearOld . '/' . $archiveFiles->file, 'public/' . $division->div_name . '/' . $yearNew . '/' . $newName);
+            $FileSys->move(config('organizer.storage_path') . $division->div_name . '\\' . $yearOld . '\\' . $archiveFiles->file, config('organizer.storage_path') . $division->div_name . '\\' . $yearNew . '\\' . $newName);
 
             $archiveFiles->date = $dateNew;
             $archiveFiles->file = $newName;

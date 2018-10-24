@@ -46,3 +46,5 @@ https://github.com/babenkoivan/scout-elasticsearch-driver
 6. php artisan scout:import "App\ArchiveFile"
 
 7. php artisan db:seed
+
+8. set storage path; by puting ORGANIZER_STORAGE="PATH" to .env

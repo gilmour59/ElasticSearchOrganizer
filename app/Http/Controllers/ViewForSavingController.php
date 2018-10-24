@@ -36,8 +36,8 @@ class ViewForSavingController extends Controller
 
         $fileSys = new Filesystem();
 
-        if(!is_dir(storage_path('app/public/temp/'))){
-            $fileSys->makeDirectory(storage_path('app/public/temp/'));
+        if(!$fileSys->exists(storage_path('app\public\temp\\'))){
+            $fileSys->makeDirectory(storage_path('app\public\temp\\'));
         }
 
         if($request->hasFile('addFileUpload')){
