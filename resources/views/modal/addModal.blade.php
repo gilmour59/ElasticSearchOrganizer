@@ -62,8 +62,4 @@
         updateList();
     });
 
-    $('#submitAddFilebtn').click(function(){
-        $('.loading').show();
-    });
-
 </script>

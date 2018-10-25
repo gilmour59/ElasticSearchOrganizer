@@ -49,7 +49,7 @@ class ViewForSavingController extends Controller
                     $fileLastModified = filemtime($path . $file);
                     time() - $fileLastModified;
                     //24 hours in a day * 3600 seconds per hour
-                    if((time() - $fileLastModified) > 10 && $file != '.' && $file != '..')
+                    if((time() - $fileLastModified) > 600 && $file != '.' && $file != '..')
                     {
                     unlink($path . $file);
                     }
@@ -71,7 +71,9 @@ class ViewForSavingController extends Controller
                 
                 $fileNameToStore = $file->getClientOriginalName();
                 
-                $path = $file->storeAs('public/temp', $fileNameToStore); 
+                $newName = $this->incrementFileName(storage_path('app/public/temp/'), $fileNameToStore);
+                
+                $path = $file->storeAs('public/temp', $newName); 
 
                 $parser = new Parser();
                 if($pdf = $parser->parseFile(storage_path('/app/') . $path)){
@@ -84,7 +86,7 @@ class ViewForSavingController extends Controller
                     return view('index');
                 }
 
-                $data = array('isDuplicate' => $isDuplicate, 'file' => $fileNameToStore, 'file_name' => $file_name, 'date' => $date, 'content' => $text, 'key_div' => $key_div);  
+                $data = array('isDuplicate' => $isDuplicate, 'file' => $newName, 'file_name' => $file_name, 'date' => $date, 'content' => $text, 'key_div' => $key_div);  
 
                 if($isDuplicate || ($key_div == 0)){
                     array_unshift($passData, $data);
@@ -96,6 +98,22 @@ class ViewForSavingController extends Controller
             $request->session()->put('passData', $passData);
         }
         return view('view_files')->with('passData', $passData);
+    }
+
+    function incrementFileName($file_path,$filename){
+
+        if(count(glob($file_path. '' .$filename))>0){
+
+            $file_ext = explode(".", $filename);
+            $file_ext = end($file_ext);
+            $file_name = str_replace(('.'.$file_ext),"",$filename);
+            $newfilename = $file_name.'_'.(count(glob($file_path."$file_name*.$file_ext")) + 1).'.'.$file_ext;
+
+            return $newfilename;
+        }else{
+
+            return $filename;
+        }
     }
 
     public function checkKeywords($text){
