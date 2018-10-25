@@ -32,7 +32,7 @@
                         </div>
                         <div class="form-group">
                             <label for="addFileUpload">Upload File: </label>
-                            <input type="file" class="form-control-file" id="addFileUpload" name="addFileUpload[]" multiple="multiple" onchange="javascript:updateList()">
+                            <input type="file" class="form-control-file" id="addFileUpload" name="addFileUpload[]" multiple="multiple" onchange="updateList()">
                             <div id="fileList"></div>
                         </div>
                     </form>
@@ -40,7 +40,7 @@
             </div>
             <div class="modal-footer">
                 <button id="closeAddFilebtn" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button id="submitAddFilebtn" onclick="return confirm('Are you sure you want to do this?');" type="submit" form="addFileForm" class="btn btn-primary" value="Submit">Save</button>
+                <button id="submitAddFilebtn" onclick="return confirmFunc()" type="submit" form="addFileForm" class="btn btn-primary" value="Submit">Save</button>
             </div>
         </div>
     </div>
@@ -61,5 +61,14 @@
         document.getElementById("addDate").valueAsDate = new Date();
         updateList();
     });
+
+    function confirmFunc() {
+        var r = confirm("Are you sure you want to do this?");
+        if (r == true) {
+            $('.loading').show();
+        } else {
+            return false;
+        }
+    }
 
 </script>

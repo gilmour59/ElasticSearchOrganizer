@@ -43,8 +43,18 @@
             </div>
             <div class="modal-footer">
                 <button id="closeEditFilebtn" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button id="submitEditbtn" onclick="return confirm('Are you sure you want to do that?');" type="submit" form="editFileForm" class="btn btn-primary" value="Submit">Save</button>
+                <button id="submitEditbtn" onclick="return confirmFunc()" type="submit" form="editFileForm" class="btn btn-primary" value="Submit">Save</button>
             </div>
         </div>
     </div>
 </div>
+<script>
+    function confirmFunc() {
+        var r = confirm("Are you sure you want to do this?");
+        if (r == true) {
+            $('.loading').show();
+        } else {
+            return false;
+        }
+    }
+</script>
