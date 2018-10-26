@@ -20,6 +20,17 @@ class ViewForSavingController extends Controller
 
     public function viewFiles(Request $request){
         
+        $url = config('scout_elastic.client.hosts.0');
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_NOBODY, true);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_exec($ch);
+        $retcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+        if (200 !== $retcode) {
+            abort('500');
+        } 
+
         $validator = Validator::make($request->all(), [
             'addFileUpload' => 'required',
             'addFileUpload.*' => 'file|required|mimes:pdf',
@@ -150,6 +161,17 @@ class ViewForSavingController extends Controller
     }
 
     public function deleteViewFile(Request $request){
+
+        $url = config('scout_elastic.client.hosts.0');
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_NOBODY, true);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_exec($ch);
+        $retcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+        if (200 !== $retcode) {
+            abort('500');
+        } 
 
         $passData = $request->session()->get('passData');
         $id = $request->get('delete');

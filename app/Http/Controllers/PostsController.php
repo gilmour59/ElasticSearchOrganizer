@@ -21,6 +21,17 @@ class PostsController extends Controller
 
     public function index(Request $request)
     {
+        $url = config('scout_elastic.client.hosts.0');
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_NOBODY, true);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_exec($ch);
+        $retcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+        if (200 !== $retcode) {
+            abort('500');
+        } 
+
         $request->session()->put('division', $request
                 ->has('division') ? $request->get('division') : ($request->session()
                 ->has('division') ? $request->session()->get('division') : 0));
@@ -84,6 +95,17 @@ class PostsController extends Controller
 
     public function store(Request $request)
     {
+        $url = config('scout_elastic.client.hosts.0');
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_NOBODY, true);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_exec($ch);
+        $retcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+        if (200 !== $retcode) {
+            abort('500');
+        } 
+
         $passedData = $request->session()->get('passData');
         
         $rule = array();
@@ -174,6 +196,17 @@ class PostsController extends Controller
 
     public function update(Request $request, $id)
     {
+        $url = config('scout_elastic.client.hosts.0');
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_NOBODY, true);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_exec($ch);
+        $retcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+        if (200 !== $retcode) {
+            abort('500');
+        } 
+
         $validator = Validator::make($request->all(), [
             'editFileUpload' => 'file|mimes:pdf',
             'editDivision' => 'required',
@@ -309,6 +342,17 @@ class PostsController extends Controller
 
     public function edit($id)
     {
+        $url = config('scout_elastic.client.hosts.0');
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_NOBODY, true);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_exec($ch);
+        $retcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+        if (200 !== $retcode) {
+            abort('500');
+        } 
+
         $archiveFiles = ArchiveFile::find($id);
         $division = Division::find($archiveFiles->division_id);
 
@@ -320,6 +364,17 @@ class PostsController extends Controller
 
     public function destroy($id)
     {
+        $url = config('scout_elastic.client.hosts.0');
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_NOBODY, true);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_exec($ch);
+        $retcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+        if (200 !== $retcode) {
+            abort('500');
+        } 
+
         $archiveFiles = ArchiveFile::findOrFail($id);
         $division = Division::find($archiveFiles->division_id);
 
@@ -343,6 +398,17 @@ class PostsController extends Controller
     
     public function view($id)
     {
+        $url = config('scout_elastic.client.hosts.0');
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_NOBODY, true);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_exec($ch);
+        $retcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+        if (200 !== $retcode) {
+            abort('500');
+        } 
+        
         $archiveFiles = ArchiveFile::find($id);
         $division = Division::find($archiveFiles->division_id);
 
@@ -353,6 +419,17 @@ class PostsController extends Controller
 
     public function download($id)
     {
+        $url = config('scout_elastic.client.hosts.0');
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_NOBODY, true);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_exec($ch);
+        $retcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+        if (200 !== $retcode) {
+            abort('500');
+        } 
+
         $archiveFiles = ArchiveFile::find($id);
         $division = Division::find($archiveFiles->division_id);
 
