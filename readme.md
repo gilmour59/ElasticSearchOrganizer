@@ -50,4 +50,5 @@ https://github.com/babenkoivan/scout-elasticsearch-driver
 8. set storage path; by puting ORGANIZER_STORAGE="PATH" to .env
 
 Errors:
-500: elasticsearch not running
+500: elasticsearch not running!
+401: not authorized!
