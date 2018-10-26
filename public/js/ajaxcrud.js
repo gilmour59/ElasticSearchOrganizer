@@ -19,8 +19,8 @@
             cache: false,
             contentType: false,
             processData: false,
-            error: function (xhr, textStatus, errorThrown) {
-                alert("Error: " + errorThrown);
+            error: function (jqXHR, textStatus, errorThrown) {
+                alert('Error Status: ' + jqXHR.status);
             },
             success: function(data){
                 $('.is-invalid').removeClass('is-invalid');
@@ -77,6 +77,9 @@
             success: function() {
                 ajaxLoad('');
             },
+            error: function (jqXHR, textStatus, errorThrown) {
+                alert('Error Status: ' + jqXHR.status);
+            }
         });
     }
 
@@ -95,8 +98,8 @@
                 $('#editDivision').append(division);
                 $('.loading').hide();
             },
-            error: function (xhr, status, error) {
-                alert(xhr.responseText);
+            error: function (jqXHR, textStatus, errorThrown) {
+                alert('Error Status: ' + jqXHR.status);
             }
         });
     }
@@ -118,8 +121,8 @@
                 console.log('division val: ' + Division);
                 $('.loading').hide();
             },
-            error: function (xhr, status, error) {
-                alert(xhr.responseText);
+            error: function (jqXHR, textStatus, errorThrown) {
+                alert('Error Status: ' + jqXHR.status);
             }
         });
     }
@@ -158,8 +161,8 @@
                 }
                 $('.loading').hide();
             },
-            error: function (xhr, status, error) {
-                alert(xhr.responseText);
+            error: function (jqXHR, textStatus, errorThrown) {
+                alert('Error Status: ' + jqXHR.status);
             }
         });
     }
@@ -177,8 +180,8 @@
                 
                 $('.loading').hide();
             },
-            error: function (xhr, status, error) {
-                alert(xhr.responseText);
+            error: function (jqXHR, textStatus, errorThrown) {
+                alert('Error Status: ' + jqXHR.status);
             }
         });
     }
