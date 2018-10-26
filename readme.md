@@ -48,3 +48,6 @@ https://github.com/babenkoivan/scout-elasticsearch-driver
 7. php artisan db:seed
 
 8. set storage path; by puting ORGANIZER_STORAGE="PATH" to .env
+
+Errors:
+500: elasticsearch not running
