@@ -26,28 +26,30 @@
 #Elasticsearch
 https://github.com/babenkoivan/scout-elasticsearch-driver
 
-1. config/app.php:
+1. php artisan migrate 
+
+2. config/app.php:
 
 'providers' => [
     Laravel\Scout\ScoutServiceProvider::class,
     ScoutElastic\ScoutElasticServiceProvider::class,
 ]
 
-2. run 
+3. run 
 - php artisan vendor:publish --provider="Laravel\Scout\ScoutServiceProvider"
 - php artisan vendor:publish --provider="ScoutElastic\ScoutElasticServiceProvider"
 
-3. Run Elasticsearch.bat
+4. Run Elasticsearch.bat
 
-4. php artisan elastic:create-index App\\ArchiveFileIndexConfigurator
+5. php artisan elastic:create-index App\\ArchiveFileIndexConfigurator
 
-5. php artisan elastic:update-mapping App\\ArchiveFile
+6. php artisan elastic:update-mapping App\\ArchiveFile
 
-6. php artisan scout:import "App\ArchiveFile"
+7. php artisan scout:import "App\ArchiveFile"
 
-7. php artisan db:seed
+8. php artisan db:seed
 
-8. set storage path; by puting ORGANIZER_STORAGE="PATH" to .env
+9. set storage path; by puting ORGANIZER_STORAGE="PATH" to .env
 
 Errors:
 500: elasticsearch not running!

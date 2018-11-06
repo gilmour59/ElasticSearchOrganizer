@@ -32,9 +32,7 @@
                             </a>
                         </th>
                         <th width="200">
-                            <a href="javascript:ajaxLoad('{{url('/?field=content&sort='.(request()->session()->get('sort')=='asc'?'desc':'asc'))}}')">
-                                Content{{request()->session()->get('field')=='content'?(request()->session()->get('sort')=='asc'?'▴':'▾'):''}}
-                            </a>
+                            Content
                         </th>
                         <th width="40">
                             Division

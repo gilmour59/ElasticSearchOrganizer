@@ -43,7 +43,8 @@ class ArchiveFile extends Model
             ],
             'file_name' => [
                 'type' => 'text',
-                'analyzer' => 'standard'
+                'analyzer' => 'standard',
+                'fielddata' => true
             ],
             'division_id' => [
                 'type' => 'integer',
