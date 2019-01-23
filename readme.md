@@ -19,7 +19,7 @@
 - MAIL_PORT=2525
 - MAIL_PORT=587
 - MAIL_USERNAME=gilmouralmalbisdev@gmail.com
-- MAIL_PASSWORD=heheksdi1
+- MAIL_PASSWORD=
 - MAIL_ENCRYPTION=tls
 - SCOUT_DRIVER=elastic
 
