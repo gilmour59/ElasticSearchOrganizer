@@ -54,3 +54,4 @@ https://github.com/babenkoivan/scout-elasticsearch-driver
 Errors:
 500: elasticsearch not running!
 401: not authorized!
+Yeet!
