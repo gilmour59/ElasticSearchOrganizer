@@ -1,6 +1,10 @@
 - added code to Exceptions/Handler.php
 - added code to Http/RedirectIfAuthenticated.php
 
+Reminder:
+- the URL is case sensitive; 
+- e.g. 192.1.23/ElasticSearchOrganizer/public 
+
 #to save changes in .env file
 - php artisan config:cache 
 
