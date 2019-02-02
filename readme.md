@@ -3,7 +3,7 @@
 
 #to save changes in .env file
 - php artisan config:cache 
-
+s
 
 #TODO
 1. composer install
