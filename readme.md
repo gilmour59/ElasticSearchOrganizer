@@ -1,6 +1,10 @@
 - added code to Exceptions/Handler.php
 - added code to Http/RedirectIfAuthenticated.php
 
+Reminder:
+- the URL is case sensitive; 
+- e.g. 192.1.23/ElasticSearchOrganizer/public 
+
 #to save changes in .env file
 - php artisan config:cache 
 s
@@ -10,7 +14,7 @@ s
 2. cp .env.example .env
 3. php artisan key:generate
 4. php artisan storage:link
-5. Apache posts limitations change
+5. Apache php.ini posts and upload limitations change
 
 #env
 - APP_URL=http://organizer.test
