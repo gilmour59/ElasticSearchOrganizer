@@ -5,9 +5,10 @@ Reminder:
 - the URL is case sensitive; 
 - e.g. 192.1.23/ElasticSearchOrganizer/public 
 
+
 #to save changes in .env file
 - php artisan config:cache 
-s
+
 
 #TODO
 1. composer install
