@@ -1,3 +1,5 @@
+Please Test Out the "return redirect('/')->with('isAdd', $isAdd)->with('errors', $errors)->withInput();" in the function viewFiles!
+
 - added code to Exceptions/Handler.php
 - added code to Http/RedirectIfAuthenticated.php
 
