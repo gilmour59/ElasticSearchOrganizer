@@ -52,7 +52,9 @@
     function confirmFunc() {
         var r = confirm("Are you sure you want to do this?");
         if (r == true) {
-            $('.loading').show();
+            $(editFileForm).submit(function(){
+                $('.loading').show();
+            });
         } else {
             return false;
         }
