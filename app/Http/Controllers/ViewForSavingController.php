@@ -174,7 +174,7 @@ class ViewForSavingController extends Controller
         } 
 
         $passData = $request->session()->get('passData');
-        $id = $request->get('delete');
+        $id = $request->get('delete'); //This is a get request not a post; this can also be $id = $request->input('delete');
         unset($passData[$id]);
         //reindex the array
         //$passData = array_values($passData); 
