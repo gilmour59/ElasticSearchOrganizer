@@ -10,20 +10,6 @@
             </div>
             <div class="modal-body">
                 <div class="container">
-                    @if (count($errors) > 0)
-                        @foreach ($errors->all() as $error) <!--all() because the object has arrays as values-->
-                            <div id="addErrorMsg" class="alert alert-danger">
-                                {{$error}} <!-- Errors from validations (not sessions) -->
-                            </div>
-                        @endforeach
-                        <script>
-                            setTimeout(function() {
-                                $("#addErrorMsg").fadeTo(200, 0).slideUp(200, function(){
-                                    $(this).remove(); 
-                                });
-                            }, 2000);
-                        </script>
-                    @endif
                     <form id="addFileForm" method="POST" action="{{ route('view_files') }}" enctype="multipart/form-data">
                         @csrf
                         <div class="form-group">

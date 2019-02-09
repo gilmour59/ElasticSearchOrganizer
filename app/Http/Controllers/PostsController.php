@@ -112,10 +112,12 @@ class PostsController extends Controller
         $ruleDateFileNameOnly = array();
         foreach($passedData as $key => $value){
             $rule['saveDivision' . $key] = ['required', new checkForUndetectedTextContent];
-            $rule['saveDate' . $key] = ['required'];
-            $rule['saveFileName' . $key] = ['required'];
+            // $rule['saveDate' . $key] = ['required'];
+            // $rule['saveFileName' . $key] = ['required'];
+            // $rule['saveContent' . $key] = ['required']; //check for null in content
             $ruleDateFileNameOnly['saveDate' . $key] = ['required'];
             $ruleDateFileNameOnly['saveFileName' . $key] = ['required'];
+            $ruleDateFileNameOnly['saveContent' . $key] = ['required']; //check for null in content
         }
 
         $request->validate($ruleDateFileNameOnly);
