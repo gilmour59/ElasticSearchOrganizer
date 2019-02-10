@@ -60,7 +60,10 @@ https://github.com/babenkoivan/scout-elasticsearch-driver
 
 9. set storage path; by puting ORGANIZER_STORAGE="PATH" to .env
 
-Errors:
+***References:
+https://github.com/babenkoivan/scout-elasticsearch-driver#console-commands
+https://laravel.com/docs/5.7/scout#indexing
+***Errors:
 500: elasticsearch not running!
 401: not authorized!
 Yeet!
