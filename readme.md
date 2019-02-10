@@ -50,9 +50,9 @@ https://github.com/babenkoivan/scout-elasticsearch-driver
 
 4. Run Elasticsearch.bat
 
-5. php artisan elastic:create-index App\\ArchiveFileIndexConfigurator
+5. php artisan elastic:create-index 'App\\ArchiveFileIndexConfigurator'
 
-6. php artisan elastic:update-mapping App\\ArchiveFile
+6. php artisan elastic:update-mapping 'App\\ArchiveFile'
 
 7. php artisan scout:import "App\ArchiveFile"
 
