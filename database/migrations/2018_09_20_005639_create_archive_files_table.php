@@ -13,14 +13,21 @@ class CreateArchiveFilesTable extends Migration
      */
     public function up()
     {
+        Schema::create('divisions', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('div_name', 100);
+        });
+
         Schema::create('archive_files', function (Blueprint $table) {
             $table->increments('id');
             $table->date('date');
             $table->longText('content');
-            $table->integer('division_id');
             $table->string('file_name', 100);
             $table->string('file', 100);
             $table->timestamps();
+
+            $table->unsignedInteger('division_id');
+            $table->foreign('division_id')->references('id')->on('divisions');
         });
     }
 
@@ -32,5 +39,6 @@ class CreateArchiveFilesTable extends Migration
     public function down()
     {
         Schema::dropIfExists('archive_files');
+        Schema::dropIfExists('divisions');
     }
 }
