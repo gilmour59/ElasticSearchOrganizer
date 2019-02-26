@@ -48,17 +48,15 @@ https://github.com/babenkoivan/scout-elasticsearch-driver
 - php artisan vendor:publish --provider="Laravel\Scout\ScoutServiceProvider"
 - php artisan vendor:publish --provider="ScoutElastic\ScoutElasticServiceProvider"
 
-4.1 Set %JAVA_HOME% in system environment variables
-
-4.2 Run Elasticsearch.bat
+4 Set %JAVA_HOME% in system environment variables and Run Elasticsearch.bat
 
 5. php artisan elastic:create-index 'App\ArchiveFileIndexConfigurator'
 
 6. php artisan elastic:update-mapping 'App\ArchiveFile'
 
-7. php artisan scout:import "App\ArchiveFile"
+7. php artisan db:seed
 
-8. php artisan db:seed
+8. php artisan scout:import "App\ArchiveFile"
 
 9. set storage path; by puting ORGANIZER_STORAGE="PATH" to .env
 
