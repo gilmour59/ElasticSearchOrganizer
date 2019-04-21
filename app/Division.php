@@ -8,7 +8,7 @@ class Division extends Model
 {
     public $timestamps = false;
     //
-    public function categories(){
+    public function archivefiles(){
         return $this->hasMany('App\ArchiveFile');
     }
 }

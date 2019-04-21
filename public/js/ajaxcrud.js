@@ -4,7 +4,7 @@
     });
 
     $(document).on('submit', '#editFileForm', function(event) {
-        
+
         event.preventDefault();
         $('.loading').show();
         var form = $(this);
@@ -36,18 +36,18 @@
                     }
                 } else {
                     $('#editFile').modal('hide');
-                    
+
                     //Modal Bug Fix
                     $('body').removeClass('modal-open');
                     $('.modal-backdrop').remove();
 
                     ajaxLoad(data.redirect_url);
-                } 
+                }
             }
         });
         //$('.loading').hide();
         return false;
-    }); 
+    });
 
     //THIS GETS THE WEBPAGE AND SENDS IT TO 'ajax.blade.php' (dataType: html)
     function ajaxLoad(filename, content) {
@@ -90,10 +90,10 @@
             url: filename,
             success: function (data) {
                 var division = '';
-                
+
                 for(var i = 0; i < data.divisions.length; i++){
                     var dataDiv = data.divisions[i].div_name;
-                    division += "<option value='"+ (i + 1) +"'>"+ dataDiv +"</option>";
+                    division += "<option value='"+ (data.divisions[i].id) +"'>"+ dataDiv +"</option>";
                 }
                 $('#editDivision').append(division);
                 $('.loading').hide();
@@ -111,10 +111,10 @@
             url: filename,
             success: function (data) {
                 var division = '';
-                
+
                 for(var i = 0; i < data.divisions.length; i++){
                     var dataDiv = data.divisions[i].div_name;
-                    division += "<option value='"+ (i + 1) +"'>"+ dataDiv +"</option>";
+                    division += "<option value='"+ (data.divisions[i].id) +"'>"+ dataDiv +"</option>";
                 }
                 $('#division').append(division);
                 $('#division').val(Division);
@@ -140,9 +140,10 @@
                 allDivision += "<option value=0>Manual</option>";
                 for(var i = 0; i < data.divisions.length; i++){
                     var dataDiv = data.divisions[i].div_name;
-                    division += "<option value='"+ (i + 1) +"'>"+ dataDiv +"</option>";
-                    allDivision += "<option value='"+ (i + 1) +"'>"+ dataDiv +"</option>";
-                    divisionZero += "<option value='"+ (i + 1) +"'>"+ dataDiv +"</option>";
+                    division += "<option value='"+ (data.divisions[i].id) +"'>"+ dataDiv +"</option>";
+                    allDivision += "<option value='"+ (data.divisions[i].id) +"'>"+ dataDiv +"</option>";
+                    divisionZero += "<option value='"+ (data.divisions[i].id) +"'>"+ dataDiv +"</option>";
+                    console.log(data.divisions[i].id);
                 }
 
                 $('#allDivision').append(allDivision);
@@ -151,13 +152,13 @@
                 for(var i = 0; i < number.length; i++){
                     if(number[i] == 0){
                         $('#saveDivision'+i).append(divisionZero);
-                        $('#saveDivision'+i).val(number[i]).trigger('change');    
+                        $('#saveDivision'+i).val(0).trigger('change');
                         $('#saveDivision'+i).css({"border": "1px red solid"});
                     }else{
                         $('#saveDivision'+i).append(division);
-                        $('#saveDivision'+i).val(number[i]).trigger('change');   
+                        $('#saveDivision'+i).val(data.divisions[i].id).trigger('change');
                     }
-                    console.log(number[i]);
+                    console.log(data.divisions[i].id + "a");
                 }
                 $('.loading').hide();
             },
@@ -177,7 +178,7 @@
                 $('#editFileName').val(data.file.file_name);
                 $('#editDate').val(data.file.date);
                 $('#editFileForm').attr('action', 'update/'+data.file.id);
-                
+
                 $('.loading').hide();
             },
             error: function (jqXHR, textStatus, errorThrown) {

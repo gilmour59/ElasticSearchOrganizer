@@ -16,7 +16,7 @@ class PostsController extends Controller
     public function __construct()
     {
         //To prioritize admin name in the nav
-        $this->middleware(['auth', 'clearance']); //The important guards are in the web routes; 
+        $this->middleware(['auth', 'clearance']); //The important guards are in the web routes;
     }
 
     public function index(Request $request)
@@ -30,7 +30,7 @@ class PostsController extends Controller
         curl_close($ch);
         if (200 !== $retcode) {
             abort('500');
-        } 
+        }
 
         $request->session()->put('division', $request
                 ->has('division') ? $request->get('division') : ($request->session()
@@ -61,11 +61,13 @@ class PostsController extends Controller
                 $archiveFiles = $archiveFiles
                     ->search('*')
                     ->orderBy($request->session()->get('field'), $request->session()->get('sort'))
+                    ->with('division')
                     ->paginate(10);
             }else{
                 $archiveFiles = $archiveFiles
                     ->search($request->session()->get('search'))
                     ->orderBy($request->session()->get('field'), $request->session()->get('sort'))
+                    ->with('division')
                     ->paginate(10);
             }
         }else{
@@ -74,23 +76,24 @@ class PostsController extends Controller
                     ->search('*')
                     ->where('division_id', $request->session()->get('division'))
                     ->orderBy($request->session()->get('field'), $request->session()->get('sort'))
+                    ->with('division')
                     ->paginate(10);
             }else{
                 $archiveFiles = $archiveFiles
                     ->search($request->session()->get('search'))
                     ->where('division_id', $request->session()->get('division'))
                     ->orderBy($request->session()->get('field'), $request->session()->get('sort'))
+                    ->with('division')
                     ->paginate(10);
-            }  
+            }
         }
 
         $division = $request->session()->get('division');
-        $division_name = Division::get()->toArray();
 
         if($request->ajax()){
-            return view('index')->with('archiveFiles', $archiveFiles)->with('division_name', $division_name);
+            return view('index')->with('archiveFiles', $archiveFiles);
         }
-        return view('ajax')->with('archiveFiles', $archiveFiles)->with('division', $division)->with('division_name', $division_name);
+        return view('ajax')->with('archiveFiles', $archiveFiles)->with('division', $division);
     }
 
     public function store(Request $request)
@@ -104,10 +107,10 @@ class PostsController extends Controller
         curl_close($ch);
         if (200 !== $retcode) {
             abort('500');
-        } 
+        }
 
         $passedData = $request->session()->get('passData');
-        
+
         $rule = array();
         $ruleDateFileNameOnly = array();
         foreach($passedData as $key => $value){
@@ -139,7 +142,7 @@ class PostsController extends Controller
             }
             $archiveFiles->division_id = $div_key;
 
-            $date = $request->input('saveDate' . $key);            
+            $date = $request->input('saveDate' . $key);
             $archiveFiles->date = $date;
 
             $year = date('Y', strtotime($date));
@@ -169,7 +172,7 @@ class PostsController extends Controller
 
                 $archiveFiles->file = $newName;
 
-                $archiveFiles->save(); 
+                $archiveFiles->save();
             }else{
                 return redirect()->route('index')->with('error', 'File Not Found!');
             }
@@ -207,7 +210,7 @@ class PostsController extends Controller
         curl_close($ch);
         if (200 !== $retcode) {
             abort('500');
-        } 
+        }
 
         $validator = Validator::make($request->all(), [
             'editFileUpload' => 'file|mimes:pdf',
@@ -222,19 +225,19 @@ class PostsController extends Controller
                 'errors' => $validator->errors()
             ]);
 
-        //Find Data 
+        //Find Data
         $archiveFiles = ArchiveFile::find($id);
 
         $FileSys = new FileSystem();
         if($archiveFiles->date != $request->input('editDate')){ //done
-            
+
             $division = Division::find($archiveFiles->division_id);
-            
+
             $dateOld = $archiveFiles->date;
             $dateNew = $request->input('editDate');
-            
+
             $yearOld = date('Y', strtotime($dateOld));
-            $yearNew = date('Y', strtotime($dateNew));  
+            $yearNew = date('Y', strtotime($dateNew));
 
             /* if(!$FileSys->exists(config('organizer.storage_path') . $division->div_name . '\\' . $yearOld . '\\')){
                 $FileSys->makeDirectory(config('organizer.storage_path') . $division->div_name . '\\' . $yearOld . '\\', 0777, true);
@@ -280,7 +283,7 @@ class PostsController extends Controller
             $divisionOld = Division::find($archiveFiles->division_id);
             $divisionNew = Division::find($request->input('editDivision'));
 
-            $year = date('Y', strtotime($archiveFiles->date));            
+            $year = date('Y', strtotime($archiveFiles->date));
 
             if(!$FileSys->exists(config('organizer.storage_path') . $divisionNew->div_name . '\\' . $year . '\\')){
                 $FileSys->makeDirectory(config('organizer.storage_path') . $divisionNew->div_name . '\\' . $year . '\\', 0777, true);
@@ -291,7 +294,7 @@ class PostsController extends Controller
 
             //Storage::move('public/' . $divisionOld->div_name . '/' . $year . '/' . $archiveFiles->file, 'public/' . $divisionNew->div_name . '/' . $year . '/' . $newName);
             $FileSys->move(config('organizer.storage_path') . $divisionOld->div_name . '\\' . $year . '\\' . $archiveFiles->file, config('organizer.storage_path') . $divisionNew->div_name . '\\' . $year . '\\' . $newName);
-            
+
             $archiveFiles->division_id = $request->input('editDivision');
             $archiveFiles->file = $newName;
         }
@@ -310,7 +313,7 @@ class PostsController extends Controller
             //Delete and Replace
             //Storage::delete('public/' . $division->div_name . '/' . $year . '/' . $archiveFiles->file);
             $FileSys->delete(config('organizer.storage_path') . $division->div_name . '\\' . $year . '\\' . $archiveFiles->file);
-            
+
             //$newName = $this->incrementFileName(storage_path('app/public/' . $division->div_name . '/' . $year . '/'),  $fileNameToStore);
             $newName = $this->incrementFileName(config('organizer.storage_path') . $division->div_name . '\\' . $year . '\\',  $fileNameToStore);
 
@@ -324,7 +327,7 @@ class PostsController extends Controller
             if($pdf = $parser->parseFile($path)){
                 //IF FAIL - 'content cannot be parsed'
                 $text = $pdf->getText();
-                $archiveFiles->content = $text; 
+                $archiveFiles->content = $text;
             }else{
                 return response()->json([
                     'fail' => true,
@@ -353,7 +356,7 @@ class PostsController extends Controller
         curl_close($ch);
         if (200 !== $retcode) {
             abort('500');
-        } 
+        }
 
         $archiveFiles = ArchiveFile::find($id);
         $division = Division::find($archiveFiles->division_id);
@@ -375,7 +378,7 @@ class PostsController extends Controller
         curl_close($ch);
         if (200 !== $retcode) {
             abort('500');
-        } 
+        }
 
         $archiveFiles = ArchiveFile::findOrFail($id);
         $division = Division::find($archiveFiles->division_id);
@@ -385,7 +388,7 @@ class PostsController extends Controller
         $FileSys = new FileSystem();
         //Storage::delete('public/' . $division->div_name . '/' . $year . '/' . $archiveFiles->file);
         $FileSys->delete(config('organizer.storage_path') . $division->div_name . '\\' . $year . '\\' . $archiveFiles->file);
-        
+
         $archiveFiles->delete();
     }
 
@@ -397,7 +400,7 @@ class PostsController extends Controller
             'divisions' => $divisions,
         ]);
     }
-    
+
     public function view($id)
     {
         $url = config('scout_elastic.client.hosts.0');
@@ -409,8 +412,8 @@ class PostsController extends Controller
         curl_close($ch);
         if (200 !== $retcode) {
             abort('500');
-        } 
-        
+        }
+
         $archiveFiles = ArchiveFile::find($id);
         $division = Division::find($archiveFiles->division_id);
 
@@ -430,7 +433,7 @@ class PostsController extends Controller
         curl_close($ch);
         if (200 !== $retcode) {
             abort('500');
-        } 
+        }
 
         $archiveFiles = ArchiveFile::find($id);
         $division = Division::find($archiveFiles->division_id);
