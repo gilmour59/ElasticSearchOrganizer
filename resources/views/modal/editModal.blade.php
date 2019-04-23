@@ -43,16 +43,16 @@
             </div>
             <div class="modal-footer">
                 <button id="closeEditFilebtn" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button id="submitEditbtn" onclick="return confirmFunc()" type="submit" form="editFileForm" class="btn btn-primary" value="Submit">Save</button>
+                <button id="submitEditbtn" onclick="return confirmEditFileFunc()" form="editFileForm" class="btn btn-primary">Save</button>
             </div>
         </div>
     </div>
 </div>
 <script>
-    function confirmFunc() {
+    function confirmEditFileFunc() {
         var r = confirm("Are you sure you want to do this?");
         if (r == true) {
-            $(editFileForm).submit(function(){
+            $('#editFileForm').submit(function(){
                 $('.loading').show();
             });
         } else {

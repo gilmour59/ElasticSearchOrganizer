@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.fileorg_app')
 
 @section('css')
   <style>

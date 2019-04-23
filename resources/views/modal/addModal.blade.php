@@ -10,6 +10,20 @@
             </div>
             <div class="modal-body">
                 <div class="container">
+                    @if (count($errors) > 0)
+                        @foreach ($errors->all() as $error) <!--all() because the object has arrays as values-->
+                            <div id="addErrorMsg" class="alert alert-danger">
+                                {{$error}} <!-- Errors from validations (not sessions) -->
+                            </div>
+                        @endforeach
+                        <script>
+                            setTimeout(function() {
+                                $("#addErrorMsg").fadeTo(200, 0).slideUp(200, function(){
+                                    $(this).remove(); 
+                                });
+                            }, 2000);
+                        </script>
+                    @endif
                     <form id="addFileForm" method="POST" action="{{ route('view_files') }}" enctype="multipart/form-data">
                         @csrf
                         <div class="form-group">
@@ -26,7 +40,7 @@
             </div>
             <div class="modal-footer">
                 <button id="closeAddFilebtn" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button id="submitAddFilebtn" onclick="return confirmFunc()" type="submit" form="addFileForm" class="btn btn-primary" value="Submit">Save</button>
+                <button id="submitAddFilebtn" onclick="return confirmAddFileFunc()" form="addFileForm" class="btn btn-primary">Save</button>
             </div>
         </div>
     </div>
@@ -48,10 +62,10 @@
         updateList();
     });
 
-    function confirmFunc() {
+    function confirmAddFileFunc() {
         var r = confirm("Are you sure you want to do this?");
-        if (r == true) {
-            $(addFileForm).submit(function(){
+        if (r == true) { 
+            $('#addFileForm').submit(function(event){
                 $('.loading').show();
             });
         } else {
