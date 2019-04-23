@@ -75,12 +75,10 @@
             data: {_method: 'DELETE', _token: token},
             url: filename,
             success: function() {
-                $("#deleteMsg").html("File Deleted!").show();
+                $("#deleteMsg").show();
 
                 setTimeout(function() {
-                    $("#deleteMsg").fadeTo(200, 0).slideUp(200, function(){
-                        $(this).remove(); 
-                    });
+                    $("#deleteMsg").slideUp(200);
                 }, 2000);
 
                 ajaxLoad('');

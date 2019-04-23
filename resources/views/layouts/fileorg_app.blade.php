@@ -116,7 +116,7 @@
 
                 <main class="py-4">
 
-                    <div id="deleteMsg" class="alert alert-success" style="display: none;"></div>
+                    <div id="deleteMsg" class="alert alert-success" style="display: none;">File Deleted!</div>
                     
                     @if (session('success'))
                         <div id='successMsg' class='alert alert-success'>
