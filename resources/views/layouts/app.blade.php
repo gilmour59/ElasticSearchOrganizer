@@ -30,7 +30,7 @@
             body {
                 font-family: 'Nunito', sans-serif !important;
                 font-weight: 300 !important;
-                background-color: white;
+                background-color: #d8d8d8;
             }
         </style>
     </head>

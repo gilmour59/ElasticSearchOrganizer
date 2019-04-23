@@ -35,11 +35,20 @@
         color: red;
         font-weight: bold;
     }
+
+    .table td {
+        border: #a5a5a5 solid 1px;
+    }
+
+    .table th {
+        border: #a5a5a5 solid 1px !important;
+    }
+
   </style>
 @endsection
 
 @section('content')
-<div class="card mx-auto" style="width: 1150px;">
+<div class="card border-secondary mx-auto" style="width: 1150px;">
     <div class="card-header font-weight-bold">
         Search
     </div>
