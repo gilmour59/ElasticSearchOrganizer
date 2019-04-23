@@ -129,11 +129,12 @@ class ViewForSavingController extends Controller
 
     public function checkKeywords($text){
 
-        $divisions = Division::select('div_name')->get();
+        $divisions = Division::select('div_name', 'id')->get();
         $Keywords = array();
         
+        //dd($divisions->toArray());
         foreach($divisions->toArray() as $key => $value){
-            $Keywords[$key + 1] = $value['div_name'];
+            $Keywords[$value['id']] = $value['div_name'];
         }
         //dd($Keywords);
         $textWithKeyword = array();

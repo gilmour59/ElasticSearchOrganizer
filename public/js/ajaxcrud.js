@@ -149,6 +149,8 @@
                 $('#allDivision').append(allDivision);
                 //$('#allDivision').trigger('change');
 
+                console.log(number);
+
                 for(var i = 0; i < number.length; i++){
                     if(number[i] == 0){
                         $('#saveDivision'+i).append(divisionZero);
@@ -156,9 +158,9 @@
                         $('#saveDivision'+i).css({"border": "1px red solid"});
                     }else{
                         $('#saveDivision'+i).append(division);
-                        $('#saveDivision'+i).val(data.divisions[i].id).trigger('change');
+                        $('#saveDivision'+i).val(number[i]).trigger('change');
                     }
-                    console.log(data.divisions[i].id + "a");
+                    console.log(number[i] + "a");
                 }
                 $('.loading').hide();
             },
