@@ -120,7 +120,7 @@ class PostsController extends Controller
             // $rule['saveContent' . $key] = ['required']; //check for null in content
             $ruleDateFileNameOnly['saveDate' . $key] = ['required'];
             $ruleDateFileNameOnly['saveFileName' . $key] = ['required'];
-            $ruleDateFileNameOnly['saveContent' . $key] = ['required']; //check for null in content
+            //$ruleDateFileNameOnly['saveContent' . $key] = ['required']; //check for null in content
         }
 
         $request->validate($ruleDateFileNameOnly);
