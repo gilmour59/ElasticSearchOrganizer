@@ -172,7 +172,14 @@ class PostsController extends Controller
 
                 $archiveFiles->file = $newName;
 
-                $archiveFiles->save();
+                $saved = $archiveFiles->save();
+
+                if(!$saved){
+                    if($FileSys->exists(config('organizer.storage_path') . $division->div_name . '\\' . $year . '\\' . $newName)){
+                        $FileSys->delete(config('organizer.storage_path') . $division->div_name . '\\' . $year . '\\' . $newName);
+                    }
+                }
+
             }else{
                 return redirect()->route('index')->with('error', 'File Not Found!');
             }
