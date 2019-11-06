@@ -32,6 +32,15 @@ class PostsController extends Controller
             abort('500');
         }
 
+        //added Date Range
+        $request->session()->put('fromdate', $request
+                ->has('fromdate') ? $request->get('fromdate') : ($request->session()
+                ->has('fromdate') ? $request->session()->get('fromdate') : null));
+
+        $request->session()->put('todate', $request
+                ->has('todate') ? $request->get('todate') : ($request->session()
+                ->has('todate') ? $request->session()->get('todate') : null));
+
         $request->session()->put('division', $request
                 ->has('division') ? $request->get('division') : ($request->session()
                 ->has('division') ? $request->session()->get('division') : 0));
@@ -48,6 +57,8 @@ class PostsController extends Controller
                 ->has('sort') ? $request->get('sort') : ($request->session()
                 ->has('sort') ? $request->session()->get('sort') : 'desc'));
 
+        //dd($request->session()->get('fromdate'));
+
         $archiveFiles = new ArchiveFile();
 
         if(empty($request->session()->get('search'))){
@@ -60,12 +71,16 @@ class PostsController extends Controller
             if($isShowAll){
                 $archiveFiles = $archiveFiles
                     ->search('*')
+                    ->where('date', '>=', $request->session()->get('fromdate'))
+                    ->where('date', '<=', $request->session()->get('todate'))
                     ->orderBy($request->session()->get('field'), $request->session()->get('sort'))
                     ->with('division')
                     ->paginate(10);
             }else{
                 $archiveFiles = $archiveFiles
                     ->search($request->session()->get('search'))
+                    ->where('date', '>=', $request->session()->get('fromdate'))
+                    ->where('date', '<=', $request->session()->get('todate'))
                     ->orderBy($request->session()->get('field'), $request->session()->get('sort'))
                     ->with('division')
                     ->paginate(10);
@@ -75,6 +90,8 @@ class PostsController extends Controller
                 $archiveFiles = $archiveFiles
                     ->search('*')
                     ->where('division_id', $request->session()->get('division'))
+                    ->where('date', '>=', $request->session()->get('fromdate'))
+                    ->where('date', '<=', $request->session()->get('todate'))
                     ->orderBy($request->session()->get('field'), $request->session()->get('sort'))
                     ->with('division')
                     ->paginate(10);
@@ -82,6 +99,8 @@ class PostsController extends Controller
                 $archiveFiles = $archiveFiles
                     ->search($request->session()->get('search'))
                     ->where('division_id', $request->session()->get('division'))
+                    ->where('date', '>=', $request->session()->get('fromdate'))
+                    ->where('date', '<=', $request->session()->get('todate'))
                     ->orderBy($request->session()->get('field'), $request->session()->get('sort'))
                     ->with('division')
                     ->paginate(10);
@@ -89,6 +108,8 @@ class PostsController extends Controller
         }
 
         $division = $request->session()->get('division');
+
+        //dd($request->session());
 
         if($request->ajax()){
             return view('index')->with('archiveFiles', $archiveFiles);

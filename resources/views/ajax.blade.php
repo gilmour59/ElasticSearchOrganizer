@@ -53,7 +53,7 @@
         Search
     </div>
     <div class="card-body">
-        <div class="row">
+        <div class="row align-items-center">
             <div class="col-sm-3">
                 <div class="form-group">
                     <label for="division">Division:</label>
@@ -62,20 +62,41 @@
                     </select>
                 </div> 
             </div>
-            <div class="col-sm-9 align-self-center">
-                <div class="input-group">
-                    <button id="refreshFile" class="btn btn-outline-success offset-1" onclick="ajaxLoad('{{route('index')}}?search=')">
-                        <i class="fas fa-redo"></i>
-                    </button>
-                    <input class="form-control col-sm-5" id="search" name="search" type="text" placeholder="Search Here" 
-                    value="{{ request()->session()->get('search') }}" onkeydown="javascript:if(event.keyCode == 13){ajaxLoad('{{route('index')}}?search='+this.value)}"/>
-                    <div class="input-group-btn">
-                        <button type="submit" class="btn btn-outline-primary" onclick="ajaxLoad('{{route('index')}}?search='+$('#search').val())">
-                            <i class="fas fa-search"></i>
-                        </button>
+            <div class="col-sm-6">
+                <div class="row mb-3">
+                    <!-- date needs to be modified -->
+                    <div class="col-sm-12">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label for="fromDate">From: <small>mm/dd/yyyy</small></label>
+                                <input class="form-control mx-auto" type="date" name="fromDate" id="fromDate" autofocus>
+                                <span id="error-fromDate" class="invalid-feedback"></span>
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="toDate">To: <small>mm/dd/yyyy</small></label>
+                                <input class="form-control mx-auto" type="date" name="toDate" id="toDate" autofocus>
+                                <span id="error-toDate" class="invalid-feedback"></span>  
+                            </div>
+                        </div>                                                        
                     </div>
                 </div>
-            </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="input-group">
+                            <button id="refreshFile" class="btn btn-outline-success offset-1" onclick="ajaxLoad('{{route('index')}}?search=')">
+                                <i class="fas fa-redo"></i>
+                            </button>
+                            <input class="form-control col-sm-9" id="search" name="search" type="text" placeholder="Search Here" 
+                            value="{{ request()->session()->get('search') }}" onkeydown="javascript:if(event.keyCode == 13){ajaxLoad('{{route('index')}}?search='+this.value+'&fromdate='+$('#fromDate').val()+'&todate='+$('#toDate').val())}"/>
+                            <div class="input-group-btn">
+                                <button type="submit" class="btn btn-outline-primary" onclick="ajaxLoad('{{route('index')}}?search='+$('#search').val()+'&fromdate='+$('#fromDate').val()+'&todate='+$('#toDate').val())">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>                                 
+            </div>            
         </div>
         <div id="content"> <!-- THIS GETS PASSED IN THE 'js/ajaxcrud.js' (ajaxLoad function) -->
         @include('index')
@@ -104,6 +125,29 @@
                 $('#addFileModal').modal('show');
             @endif
         @endif
+
+        document.getElementById("fromDate").valueAsDate = new Date();
+        document.getElementById("toDate").valueAsDate = new Date();
+    });
+
+    $('#fromDate').change(function(){
+        var from_current_date = $('#fromDate').val();
+        var to_current_date = $('#toDate').val();
+
+        $('#toDate').attr("min", from_current_date);
+
+        if(to_current_date < from_current_date ){
+            $('#toDate').val(from_current_date);            
+        }        
+    });
+
+    $('#toDate').change(function(){
+        var from_current_date = $('#fromDate').val();
+        var to_current_date = $('#toDate').val();
+
+        if(to_current_date < from_current_date){
+            $('#fromDate').val(to_current_date);
+        }        
     });
 
     $('#refreshFile').click(function(){

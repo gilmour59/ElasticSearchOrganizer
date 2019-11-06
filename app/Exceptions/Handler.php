@@ -46,6 +46,10 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        //just to clear up the special character after the exception has been executed!
+        //request()->session()->put('search', '');
+        //dd(request()->session()->get('search'));        
+        //dd($exception);
         return parent::render($request, $exception);
     }
 }

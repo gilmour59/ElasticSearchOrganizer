@@ -81,6 +81,7 @@
 @include('modal.editModal')
 
 <script>
+    //for edit modal file input to get selected after picking file.
     $('.custom-file-input').on('change',function(){
         $(this).next('.form-control-file').addClass("selected").html($(this).val());
     });
