@@ -63,16 +63,24 @@
                 </div> 
             </div>
             <div class="col-sm-6">
-                <div class="row mb-3">
-                    <!-- date needs to be modified -->
+                <div class="row mb-3">                    
                     <div class="col-sm-12">
                         <div class="row">
                             <div class="col-sm-6">
                                 <label for="fromDate">From: <small>mm/dd/yyyy</small></label>
-                                <input class="form-control mx-auto" type="date" name="fromDate" id="fromDate" autofocus>
+                                <div class="row">
+                                    <div class="col-3-sm mr-2">
+                                        <button id="refreshDate" class="btn btn-outline-success" onclick="refreshDate()">
+                                            <i class="fas fa-redo"></i>
+                                        </button>
+                                    </div>
+                                    <div class="col-9-sm">
+                                        <input class="form-control mx-auto" type="date" name="fromDate" id="fromDate" autofocus>    
+                                    </div>
+                                </div>                                                                                                                     
                                 <span id="error-fromDate" class="invalid-feedback"></span>
                             </div>
-                            <div class="col-sm-6">
+                            <div class="col-sm-5">
                                 <label for="toDate">To: <small>mm/dd/yyyy</small></label>
                                 <input class="form-control mx-auto" type="date" name="toDate" id="toDate" autofocus>
                                 <span id="error-toDate" class="invalid-feedback"></span>  
@@ -126,7 +134,7 @@
             @endif
         @endif
 
-        document.getElementById("fromDate").valueAsDate = new Date();
+        document.getElementById("fromDate").valueAsDate = new Date("1900-01-01");
         document.getElementById("toDate").valueAsDate = new Date();
     });
 
@@ -162,5 +170,10 @@
             ajaxLoad('{{route('index')}}?division='+div_id);
         }
     });
+
+    function refreshDate(){
+        document.getElementById("fromDate").valueAsDate = new Date("1900-01-01");
+        document.getElementById("toDate").valueAsDate = new Date();
+    }
 </script>
 @endsection
